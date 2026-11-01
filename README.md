@@ -1,6 +1,6 @@
 <h1 align="center">秒见课表（微信小程序）</h1>
 
-<p align="center">一个开源的微信小程序课程表：周视图、单双周、课程冲突并排、今日/下一节课、手动增删改、新版正方教务系统导入、课表文件导入导出。</p>
+一个开源的微信小程序课程表：周视图、单双周、课程冲突并排、今日/下一节课、手动增删改、新版正方教务系统导入、课表文件导入导出。
 
 <p align="center">
   <a href="https://github.com/zhangyu10086/miaojian-course-table/actions/workflows/test.yml">
