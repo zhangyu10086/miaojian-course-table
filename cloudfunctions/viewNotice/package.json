@@ -1,0 +1,9 @@
+{
+  "name": "viewNotice",
+  "version": "1.0.0",
+  "description": "读取公告详情并按用户去重累计浏览量",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

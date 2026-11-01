@@ -1,0 +1,142 @@
+<view class="page edit-page">
+  <view class="form-card">
+    <view class="form-row">
+      <text class="form-label">课程名</text>
+      <input
+        class="form-input"
+        value="{{name}}"
+        placeholder="例如：高等数学"
+        placeholder-class="placeholder"
+        maxlength="40"
+        bindinput="onNameInput"
+      />
+    </view>
+    <view class="form-row">
+      <text class="form-label">教师</text>
+      <input
+        class="form-input"
+        value="{{teacher}}"
+        placeholder="选填"
+        placeholder-class="placeholder"
+        maxlength="30"
+        bindinput="onTeacherInput"
+      />
+    </view>
+    <view class="form-row">
+      <text class="form-label">地点</text>
+      <input
+        class="form-input"
+        value="{{location}}"
+        placeholder="例如：教学楼 A101"
+        placeholder-class="placeholder"
+        maxlength="50"
+        bindinput="onLocationInput"
+      />
+    </view>
+  </view>
+
+  <view class="form-card">
+    <picker mode="selector" range="{{days}}" value="{{dayIndex}}" bindchange="onDayChange">
+      <view class="form-row">
+        <text class="form-label">星期</text>
+        <text class="form-value">{{days[dayIndex]}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+    <picker
+      mode="selector"
+      range="{{sectionLabels}}"
+      value="{{startIndex}}"
+      bindchange="onStartChange"
+    >
+      <view class="form-row">
+        <text class="form-label">开始节次</text>
+        <text class="form-value">{{sectionLabels[startIndex]}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+    <picker
+      mode="selector"
+      range="{{sectionLabels}}"
+      value="{{endIndex}}"
+      bindchange="onEndChange"
+    >
+      <view class="form-row">
+        <text class="form-label">结束节次</text>
+        <text class="form-value">{{sectionLabels[endIndex]}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="form-card">
+    <view class="week-head">
+      <view>
+        <view class="form-title">上课周次</view>
+        <view class="form-hint">已选 {{weekCount}} 周</view>
+      </view>
+      <view class="week-actions">
+        <text class="mini-btn" bindtap="onSelectAllWeeks">全选</text>
+        <text class="mini-btn" bindtap="onSelectOddWeeks">单周</text>
+        <text class="mini-btn" bindtap="onSelectEvenWeeks">双周</text>
+        <text class="mini-btn" bindtap="onClearWeeks">清空</text>
+      </view>
+    </view>
+    <view class="week-grid">
+      <view
+        wx:for="{{weekChips}}"
+        wx:key="week"
+        class="week-chip {{item.selected ? 'selected' : ''}}"
+        data-index="{{index}}"
+        bindtap="onWeekToggle"
+      >
+        {{item.week}}
+      </view>
+    </view>
+  </view>
+
+  <view class="form-card">
+    <view class="form-title">课程颜色</view>
+    <view class="color-row">
+      <view
+        wx:for="{{colors}}"
+        wx:key="*this"
+        class="color-dot {{index === colorIndex ? 'selected' : ''}}"
+        style="background: {{item}};"
+        data-index="{{index}}"
+        bindtap="onColorSelect"
+      ></view>
+    </view>
+  </view>
+
+  <view class="form-card">
+    <view class="form-row">
+      <text class="form-label">学分</text>
+      <input
+        class="form-input"
+        type="digit"
+        value="{{credit}}"
+        placeholder="选填"
+        placeholder-class="placeholder"
+        bindinput="onCreditInput"
+      />
+    </view>
+    <view class="remark-row">
+      <text class="form-label">备注</text>
+      <textarea
+        class="textarea"
+        value="{{remark}}"
+        placeholder="考试信息、作业要求等，选填"
+        placeholder-class="placeholder"
+        maxlength="300"
+        auto-height
+        bindinput="onRemarkInput"
+      ></textarea>
+    </view>
+  </view>
+
+  <view class="save-area">
+    <view class="primary-btn" bindtap="onSave">保存课程</view>
+    <view wx:if="{{isEdit}}" class="delete-btn danger-text" bindtap="onDelete">删除这门课</view>
+  </view>
+</view>

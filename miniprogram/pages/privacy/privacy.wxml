@@ -1,0 +1,71 @@
+<view class="page privacy-page">
+  <view class="privacy-head">
+    <view class="privacy-title">秒见课表 · 隐私说明</view>
+    <view class="privacy-updated">更新日期：2026 年 10 月 22 日</view>
+  </view>
+
+  <view class="privacy-card">
+    <view class="p">
+      秒见课表是一个课程表工具，不含广告。我们尽量少收集信息，课表数据默认只保存在你的手机里。
+    </view>
+  </view>
+
+  <view class="section-title">1. 我们处理哪些信息</view>
+  <view class="privacy-card">
+    <view class="p"><text class="strong">学号</text>：仅在「从教务系统导入」时使用，用于登录你填写的学校教务系统。</view>
+    <view class="p"><text class="strong">教务密码</text>：只用于本次登录。云函数会在登录会话中向学校取回公钥并交给手机，密码在你的手机上加密后才发送；云函数只拿到密文，不接触明文，不写入数据库、不写入日志，导入结束后即丢弃。如果你主动勾选「记住密码」，密码会以明文保存在本机存储中，建议不要勾选。</view>
+    <view class="p"><text class="strong">课表数据</text>：课程名称、教师、地点、节次、周次、备注等，保存在本机。</view>
+    <view class="p"><text class="strong">学校信息</text>：云数据库中保存的是公开的学校名称与教务地址，不包含任何个人信息。</view>
+    <view class="p"><text class="strong">微信 openid</text>：云函数会自动获取当前微信在本小程序内的 openid，用于校验公告管理员身份，以及按用户去重统计公告浏览量。该标识保存在云数据库的浏览记录中，不包含昵称、头像、手机号。</view>
+    <view class="p"><text class="strong">运行日志</text>：云函数可能记录错误码和错误描述，用于排查失败原因，不包含账号和密码。</view>
+  </view>
+
+  <view class="section-title">2. 信息如何使用</view>
+  <view class="privacy-card">
+    <view class="p">学号和密码只用于向 <text class="strong">你本人填写的学校教务系统</text> 发起登录请求，以获取你的课表。除此之外不用于任何其他用途。</view>
+    <view class="p">我们不会把你的信息用于广告、用户画像、数据分析或出售给第三方。</view>
+  </view>
+
+  <view class="section-title">3. 信息存在哪里</view>
+  <view class="privacy-card">
+    <view class="p">课表、学期设置、界面偏好保存在你的手机本地（微信小程序存储）。</view>
+    <view class="p">登录请求经过微信云开发的云函数转发。云函数只在校验学校域名、完成本次登录时使用学号和加密后的密码密文，不持久化保存。登录会话以临时 token 形式在本次导入的两步请求之间传递，5 分钟后失效。</view>
+    <view class="p">公告浏览量记录（公告 id、openid、浏览时间）保存在云数据库，用于去重计数和管理员校验。</view>
+    <view class="p">导出课表时，数据会写入系统剪贴板，内容由你自行保管。</view>
+  </view>
+
+  <view class="section-title">4. 系统权限</view>
+  <view class="privacy-card">
+    <view class="p"><text class="strong">剪贴板</text>：只有当你点击「导出课表数据」「导入课表数据」或公告里的「复制群号」时读写，用于备份、迁移或复制交流群号。</view>
+  </view>
+
+  <view class="section-title">5. 第三方</view>
+  <view class="privacy-card">
+    <view class="p">本小程序会访问：你填写的学校教务系统、微信云开发（腾讯云）。除此之外不向其他第三方提供你的信息。</view>
+    <view class="p">本小程序不是任何学校的官方产品，与学校及教务系统提供方没有隶属关系。</view>
+  </view>
+
+  <view class="section-title">6. 你的权利</view>
+  <view class="privacy-card">
+    <view class="p">你可以在「我的」中清空课表、导出课表、取消记住密码。删除小程序或清除小程序缓存会删除本机保存的全部数据。</view>
+    <view class="p">请只使用本人的教务账号，不要代他人登录或批量抓取数据。</view>
+  </view>
+
+  <view class="section-title">7. 未成年人</view>
+  <view class="privacy-card">
+    <view class="p">如果你未满 14 周岁，请在监护人指导下使用本小程序。</view>
+  </view>
+
+  <view class="section-title">8. 免责与变更</view>
+  <view class="privacy-card">
+    <view class="p">学校教务系统可能改版、启用验证码或限制校外访问，这些都可能导致导入失败，本小程序无法保证始终可用。</view>
+    <view class="p">隐私说明更新后会在本页面公布。继续使用即表示你接受更新后的说明。</view>
+  </view>
+
+  <view class="section-title">9. 联系我们</view>
+  <view class="privacy-card">
+    <view class="p">如对隐私处理有疑问，可通过小程序客服留言联系我们。</view>
+  </view>
+
+  <view class="privacy-foot">秒见课表 · 无广告 · 课表保存在本机</view>
+</view>

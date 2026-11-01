@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/entry/entry",
+    "pages/schedule/schedule",
+    "pages/today/today",
+    "pages/mine/mine",
+    "pages/course-edit/course-edit",
+    "pages/sync/sync",
+    "pages/school-picker/school-picker",
+    "pages/settings/settings",
+    "pages/privacy/privacy",
+    "pages/admin/admin",
+    "pages/school-admin/school-admin",
+    "pages/notice-admin/notice-admin",
+    "pages/notice-edit/notice-edit",
+    "pages/notice-detail/notice-detail"
+  ],
+  "window": {
+    "navigationBarTitleText": "秒见课表",
+    "navigationBarBackgroundColor": "#f7f7f2",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f7f2",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#8b8b86",
+    "selectedColor": "#1f1f1c",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/schedule/schedule",
+        "text": "课表"
+      },
+      {
+        "pagePath": "pages/today/today",
+        "text": "今日"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

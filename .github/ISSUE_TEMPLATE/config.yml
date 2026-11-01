@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 使用问题与讨论
+    url: https://github.com/zhangyu10086/miaojian-course-table/discussions
+    about: 使用疑问、功能建议、课表分享，请到 Discussions
+  - name: 安全漏洞
+    url: https://github.com/zhangyu10086/miaojian-course-table/security/advisories/new
+    about: 请不要公开提交安全问题

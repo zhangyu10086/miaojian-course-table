@@ -1,0 +1,158 @@
+.admin-page {
+  padding: 28rpx 24rpx 60rpx;
+}
+
+.admin-head {
+  padding: 0 6rpx 24rpx;
+}
+
+.admin-title {
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.admin-sub {
+  font-size: 22rpx;
+  color: var(--muted);
+  margin-top: 8rpx;
+  line-height: 1.5;
+}
+
+.admin-card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 28rpx 26rpx;
+}
+
+.admin-status {
+  font-size: 26rpx;
+  color: var(--muted);
+  text-align: center;
+  padding: 40rpx 26rpx;
+}
+
+.admin-desc {
+  font-size: 24rpx;
+  color: var(--muted);
+  margin-top: 24rpx;
+}
+
+.openid-box {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+  padding: 16rpx 18rpx;
+  background: var(--soft);
+  border-radius: 14rpx;
+}
+
+.openid-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 22rpx;
+  word-break: break-all;
+}
+
+.copy-link {
+  flex-shrink: 0;
+  margin-left: 14rpx;
+  padding: 6rpx 10rpx;
+  font-size: 22rpx;
+  color: var(--text);
+  text-decoration: underline;
+}
+
+.copy-hint {
+  font-size: 20rpx;
+  color: var(--muted);
+  margin-top: 10rpx;
+}
+
+.admin-steps {
+  margin-top: 22rpx;
+  font-size: 22rpx;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.admin-error {
+  margin-top: 20rpx;
+  font-size: 22rpx;
+  color: #b94a3f;
+  line-height: 1.6;
+}
+
+.admin-btn {
+  margin-top: 24rpx;
+}
+
+.entry-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 30rpx 26rpx;
+  margin-bottom: 18rpx;
+}
+
+.entry-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.entry-title-row {
+  display: flex;
+  align-items: center;
+}
+
+.entry-title {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.entry-tag {
+  margin-left: 10rpx;
+  padding: 2rpx 8rpx;
+  border-radius: 8rpx;
+  font-size: 18rpx;
+}
+
+.entry-tag.ok {
+  background: #e6f2ea;
+  color: #2f6b45;
+}
+
+.entry-tag.warn {
+  background: #fff3d6;
+  color: #9a5b00;
+}
+
+.admin-hint {
+  margin: 0 6rpx 20rpx;
+  font-size: 21rpx;
+  color: #9a5b00;
+  line-height: 1.6;
+}
+
+.entry-desc {
+  font-size: 22rpx;
+  color: var(--muted);
+  margin-top: 8rpx;
+  line-height: 1.5;
+}
+
+.chevron {
+  flex-shrink: 0;
+  margin-left: 16rpx;
+  font-size: 34rpx;
+  color: var(--muted);
+}
+
+.admin-foot {
+  margin-top: 26rpx;
+  padding: 0 6rpx;
+  font-size: 21rpx;
+  color: var(--muted);
+  line-height: 1.7;
+}

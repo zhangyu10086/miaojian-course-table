@@ -1,0 +1,123 @@
+<view class="page admin-page">
+  <view class="admin-head">
+    <view class="admin-title">学校管理</view>
+    <view class="admin-sub">新增或修改后约 1 分钟生效，用户重新打开学校列表即可看到</view>
+  </view>
+
+  <view wx:if="{{checking}}" class="admin-card admin-status">正在加载…</view>
+
+  <view wx:elif="{{!admin}}" class="admin-card">
+    <view class="admin-status">{{error || '当前微信不是管理员'}}</view>
+    <view wx:if="{{openid}}" class="admin-desc">当前微信的 openid：</view>
+    <view wx:if="{{openid}}" class="openid-box">
+      <text class="openid-text" selectable>{{openid}}</text>
+    </view>
+    <view class="ghost-btn admin-btn" bindtap="onRefresh">重新检查</view>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{editing}}" class="admin-card">
+      <view class="form-title">{{form.id ? '编辑学校' : '新增学校'}}</view>
+
+      <view class="field-label">学校名称</view>
+      <input
+        class="field-input"
+        value="{{form.name}}"
+        data-field="name"
+        maxlength="40"
+        placeholder="例如 XX大学"
+        bindinput="onFieldInput"
+      />
+
+      <view class="field-label">教务地址</view>
+      <input
+        class="field-input"
+        value="{{form.baseUrl}}"
+        data-field="baseUrl"
+        placeholder="https://jwglxt.example.edu.cn"
+        bindinput="onFieldInput"
+      />
+      <view class="field-hint">填教务系统首页即可，会自动补全 /jwglxt</view>
+
+      <view class="field-label">搜索别名（选填）</view>
+      <input
+        class="field-input"
+        value="{{form.aliasesText}}"
+        data-field="aliasesText"
+        placeholder="xxdx, xxxx"
+        bindinput="onFieldInput"
+      />
+      <view class="field-hint">用逗号分隔，支持拼音缩写和简称</view>
+
+      <view class="switch-row">
+        <view class="switch-main">
+          <view class="switch-title">开放自动导入</view>
+          <view class="switch-desc">关闭后用户只能手动添加课程</view>
+        </view>
+        <switch
+          checked="{{form.autoImport}}"
+          data-field="autoImport"
+          color="#1f1f1c"
+          bindchange="onSwitch"
+        />
+      </view>
+
+      <view class="switch-row">
+        <view class="switch-main">
+          <view class="switch-title">已实测通过</view>
+          <view class="switch-desc">导入成功一次后会自动变成已验证</view>
+        </view>
+        <switch
+          checked="{{form.verified}}"
+          data-field="verified"
+          color="#1f1f1c"
+          bindchange="onSwitch"
+        />
+      </view>
+
+      <view class="form-actions">
+        <view class="ghost-btn form-action" bindtap="onCancel">取消</view>
+        <view class="primary-btn form-action" bindtap="onSave">{{saving ? '保存中…' : '保存'}}</view>
+      </view>
+    </view>
+
+    <block wx:else>
+      <view class="toolbar">
+        <input
+          class="search-input"
+          value="{{keyword}}"
+          placeholder="搜索学校名称或域名"
+          bindinput="onSearch"
+        />
+        <view class="primary-btn add-btn" bindtap="onAdd">新增学校</view>
+      </view>
+
+      <view wx:if="{{!visibleSchools.length}}" class="admin-card admin-status">
+        没有匹配的学校
+      </view>
+
+      <view wx:else class="school-list">
+        <view wx:for="{{visibleSchools}}" wx:key="id" class="manage-card">
+          <view class="manage-head">
+            <text class="manage-title">{{item.name}}</text>
+            <text class="tag {{item.autoClass}}">{{item.autoLabel}}</text>
+            <text class="tag {{item.statusClass}}">{{item.statusLabel}}</text>
+          </view>
+          <view class="manage-meta">{{item.baseUrl}}</view>
+          <view wx:if="{{item.aliasesText}}" class="manage-meta">别名：{{item.aliasesText}}</view>
+          <view class="manage-actions">
+            <view class="manage-btn" data-id="{{item.id}}" bindtap="onEdit">编辑</view>
+            <view
+              class="manage-btn danger-text"
+              data-id="{{item.id}}"
+              data-name="{{item.name}}"
+              bindtap="onDelete"
+            >{{deletingId === item.id ? '删除中…' : '删除'}}</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="admin-foot">「默认规则」表示旧数据，按小程序内置白名单判断；编辑保存后会写入明确开关。删除学校不会删除用户已经导入的课程。导入成功一次后，状态会自动变成「已验证」。</view>
+    </block>
+  </block>
+</view>

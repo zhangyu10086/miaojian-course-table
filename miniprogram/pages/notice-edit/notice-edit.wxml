@@ -1,0 +1,62 @@
+<view class="page edit-page">
+  <view wx:if="{{loading}}" class="state">正在加载…</view>
+
+  <view wx:elif="{{error}}" class="state">
+    <view class="state-desc">{{error}}</view>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{meta}}" class="meta-card">
+      <view class="meta-row">
+        <text>{{meta.source}}</text>
+        <text class="sep">·</text>
+        <text>发布 {{meta.publishedLabel}}</text>
+      </view>
+      <view class="meta-row">
+        <text>更新 {{meta.updatedLabel}}</text>
+        <text class="sep">·</text>
+        <text>{{meta.views}} 次浏览</text>
+      </view>
+    </view>
+
+    <view class="form-card">
+      <view class="field-label">标题</view>
+      <input
+        class="field-input"
+        value="{{title}}"
+        maxlength="80"
+        placeholder="公告标题"
+        bindinput="onTitleInput"
+      />
+
+      <view class="field-label">正文</view>
+      <textarea
+        class="field-textarea"
+        value="{{content}}"
+        maxlength="2000"
+        auto-height
+        placeholder="公告正文，支持换行"
+        bindinput="onContentInput"
+      ></textarea>
+      <view class="field-count">{{content.length}} / 2000</view>
+      <view class="field-hint">支持基础 Markdown：# 标题、## 小标题、**加粗**、- 列表、1. 列表、&gt; 引用；不支持图片、链接、HTML 和图标字体。</view>
+
+      <view class="field-label">交流群号（选填）</view>
+      <input
+        class="field-input"
+        type="number"
+        value="{{qqGroup}}"
+        maxlength="15"
+        placeholder="例如 1124141900"
+        bindinput="onQqGroupInput"
+      />
+      <view class="field-hint">填写后，这条公告的详情页会显示「复制群号」按钮</view>
+
+      <view class="primary-btn save-btn {{saving ? 'loading' : ''}}" bindtap="onSave">
+        {{saving ? '正在保存…' : '保存修改'}}
+      </view>
+    </view>
+
+    <view class="edit-foot">保存后会自动更新「更新时间」</view>
+  </block>
+</view>

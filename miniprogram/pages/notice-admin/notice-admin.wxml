@@ -1,0 +1,93 @@
+<view class="page admin-page">
+  <view class="admin-head">
+    <view class="admin-title">公告管理</view>
+    <view class="admin-sub">只有管理员能发布，发布时间由服务器自动记录</view>
+  </view>
+
+  <view wx:if="{{checking}}" class="admin-card admin-status">
+    正在检查管理员身份…
+  </view>
+
+  <view wx:elif="{{!admin}}" class="admin-card">
+    <view class="admin-status">{{configured ? '当前微信不是管理员' : '还没有配置管理员'}}</view>
+    <view class="admin-desc">当前微信的 openid：</view>
+    <view class="openid-box">
+      <text class="openid-text" selectable>{{openid || '获取中…'}}</text>
+      <text class="copy-link" bindtap="onCopyOpenid">复制</text>
+    </view>
+    <view class="copy-hint">复制不了？长按上面的 openid 手动选择复制</view>
+    <view class="admin-steps">
+      <view>1. 云开发控制台 → 云函数 → publishNotice → 配置</view>
+      <view>2. 环境变量添加 ADMIN_OPENIDS，值填上面的 openid</view>
+      <view>3. 保存后点「重新检查」</view>
+    </view>
+    <view class="ghost-btn admin-btn" bindtap="onCheck">重新检查</view>
+  </view>
+
+  <block wx:else>
+    <view class="admin-card">
+      <view class="field-label">标题</view>
+      <input
+        class="field-input"
+        value="{{title}}"
+        placeholder="例如：版本更新说明"
+        maxlength="80"
+        bindinput="onTitleInput"
+      />
+
+      <view class="field-label">正文</view>
+      <textarea
+        class="field-textarea"
+        value="{{content}}"
+        placeholder="纯文本，支持换行"
+        maxlength="2000"
+        auto-height
+        bindinput="onContentInput"
+      ></textarea>
+      <view class="field-count">{{content.length}} / 2000</view>
+      <view class="field-hint">支持基础 Markdown：# 标题、## 小标题、**加粗**、- 列表、1. 列表、&gt; 引用；不支持图片、链接、HTML 和图标字体。</view>
+
+      <view class="field-label">交流群号（选填）</view>
+      <input
+        class="field-input"
+        type="number"
+        value="{{qqGroup}}"
+        maxlength="15"
+        placeholder="例如 1124141900"
+        bindinput="onQqGroupInput"
+      />
+      <view class="field-hint">填写后，这条公告的详情页会显示「复制群号」按钮</view>
+
+      <view class="primary-btn publish-btn {{publishing ? 'loading' : ''}}" bindtap="onPublish">
+        {{publishing ? '正在发布…' : '发布公告'}}
+      </view>
+    </view>
+
+    <view class="admin-section-title">公告列表</view>
+
+    <view wx:if="{{listLoading}}" class="admin-card admin-status">正在加载公告…</view>
+    <view wx:elif="{{listError}}" class="admin-card admin-status">{{listError}}</view>
+    <view wx:elif="{{!notices.length}}" class="admin-card admin-status">还没有发布过公告</view>
+    <view wx:else class="manage-list">
+      <view wx:for="{{notices}}" wx:key="id" class="manage-card">
+        <view class="manage-head">
+          <text class="manage-title">{{item.title}}</text>
+          <text wx:if="{{item.pinned}}" class="manage-pin">置顶</text>
+        </view>
+        <view class="manage-meta">发布 {{item.publishedLabel}}</view>
+        <view class="manage-meta">更新 {{item.updatedLabel}} · 浏览 {{item.views}} 次</view>
+        <view class="manage-actions">
+          <view
+            class="manage-btn"
+            data-id="{{item.id}}"
+            bindtap="onTogglePin"
+          >{{item.pinned ? '取消置顶' : '置顶'}}</view>
+          <view class="manage-btn" data-id="{{item.id}}" bindtap="onEditNotice">编辑</view>
+          <view class="manage-btn danger-text" data-id="{{item.id}}" bindtap="onDeleteNotice">删除</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="admin-foot">发布后，用户下次打开首页会看到红点。</view>
+  </block>
+</view>

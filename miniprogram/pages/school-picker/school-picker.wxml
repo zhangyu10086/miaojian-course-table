@@ -1,0 +1,82 @@
+<view class="page picker-page">
+  <view class="search-card">
+    <input
+      class="search-input"
+      value="{{keyword}}"
+      placeholder="搜索学校名称、拼音或域名"
+      placeholder-class="placeholder"
+      confirm-type="search"
+      bindinput="onSearch"
+    />
+  </view>
+
+  <view class="picker-hint">
+    标有「安全导入」的学校可以直接拉取课表；「待验证」表示还未实测；其他学校请手动添加课程。
+  </view>
+
+  <view wx:if="{{loading}}" class="picker-loading">
+    <view class="picker-loading-text">正在加载学校列表…</view>
+  </view>
+
+  <block wx:else>
+  <view wx:if="{{!keyword && recent.length}}" class="section">
+    <view class="section-title">最近使用</view>
+    <view class="list-card">
+      <view
+        wx:for="{{recent}}"
+        wx:key="baseUrl"
+        class="school-row"
+        data-index="{{index}}"
+        bindtap="onPickRecent"
+      >
+        <view class="school-main">
+          <view class="school-title">
+            <text class="school-name">{{item.name}}</text>
+            <text wx:if="{{item.secure}}" class="school-tag secure">安全导入</text>
+            <text wx:if="{{item.secure && !item.verified}}" class="school-tag pending">待验证</text>
+            <text wx:if="{{!item.secure}}" class="school-tag manual">仅手动</text>
+          </view>
+          <text class="school-host">{{item.baseUrl}}</text>
+        </view>
+        <text class="chevron">›</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">{{keyword ? '搜索结果' : '全部学校'}}</view>
+    <view wx:if="{{schools.length}}" class="list-card">
+      <view
+        wx:for="{{schools}}"
+        wx:key="id"
+        class="school-row"
+        data-id="{{item.id}}"
+        bindtap="onPick"
+      >
+        <view class="school-main">
+          <view class="school-title">
+            <text class="school-name">{{item.name}}</text>
+            <text wx:if="{{item.secure}}" class="school-tag secure">安全导入</text>
+            <text wx:if="{{item.secure && !item.verified}}" class="school-tag pending">待验证</text>
+            <text wx:if="{{!item.secure}}" class="school-tag manual">仅手动</text>
+          </view>
+          <text class="school-host">{{item.host}}</text>
+        </view>
+        <text class="chevron">›</text>
+      </view>
+    </view>
+    <view wx:else class="empty">
+      <view class="empty-title">没有找到匹配的学校</view>
+      <view class="empty-desc">可以试试拼音缩写或域名，或者手动输入教务地址</view>
+    </view>
+  </view>
+
+  <view class="manual-card" bindtap="onManualAdd">
+    <view class="manual-main">
+      <text class="manual-title">没找到你的学校？</text>
+      <text class="manual-hint">目前只有部分学校支持自动导入，其他学校请手动添加课程</text>
+    </view>
+    <text class="chevron">›</text>
+  </view>
+  </block>
+</view>

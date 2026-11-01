@@ -1,0 +1,9 @@
+{
+  "name": "manageNotice",
+  "version": "1.0.0",
+  "description": "管理员管理公告：列表、编辑、删除、置顶",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

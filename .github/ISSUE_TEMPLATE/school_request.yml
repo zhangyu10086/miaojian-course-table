@@ -1,0 +1,68 @@
+name: 学校适配申请
+description: 申请新增或修复某所学校的教务自动导入
+title: "[学校适配] "
+labels: ["school"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        只提交学校名称和教务地址即可，**不要填写任何账号密码**。
+        可先运行 `node scripts/check-school.js "学校名称" "教务地址"` 自动检测。
+  - type: input
+    id: school
+    attributes:
+      label: 学校名称
+      placeholder: 例如 XX大学
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: 教务系统地址
+      description: 填登录页或首页即可
+      placeholder: https://jw.example.edu.cn
+    validations:
+      required: true
+  - type: dropdown
+    id: system
+    attributes:
+      label: 教务系统类型
+      options:
+        - 新版正方（jwglxt）
+        - 旧版正方（default2.aspx）
+        - 强智
+        - 青果 / URP / 其他
+        - 不确定
+    validations:
+      required: true
+  - type: dropdown
+    id: login
+    attributes:
+      label: 登录方式
+      options:
+        - 账号密码，无验证码
+        - 账号密码 + 图形验证码
+        - 账号密码 + 滑块
+        - 学校统一身份认证（SSO）
+        - 不确定
+    validations:
+      required: true
+  - type: dropdown
+    id: access
+    attributes:
+      label: 网络访问
+      options:
+        - 公网可直接打开
+        - 需要校园网
+        - 需要 VPN
+        - 不确定
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: 检测结果（可选）
+      description: 粘贴 `node scripts/check-school.js` 的输出
+      render: text
+    validations:
+      required: false

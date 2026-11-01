@@ -1,0 +1,9 @@
+{
+  "name": "publishNotice",
+  "version": "1.0.0",
+  "description": "管理员发布公告，服务端自动写入发布时间",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

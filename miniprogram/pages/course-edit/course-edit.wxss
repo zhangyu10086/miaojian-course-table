@@ -1,0 +1,155 @@
+.edit-page {
+  padding: 24rpx 24rpx 60rpx;
+}
+
+.form-card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 4rpx 26rpx;
+  margin-bottom: 20rpx;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  min-height: 96rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.form-card > .form-row:last-child,
+.form-card > picker:last-child .form-row,
+.form-card > .remark-row:last-child {
+  border-bottom: none;
+}
+
+.form-label {
+  width: 150rpx;
+  flex-shrink: 0;
+  font-size: 27rpx;
+  color: var(--muted);
+}
+
+.form-input {
+  flex: 1;
+  min-width: 0;
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: 28rpx;
+  text-align: right;
+  padding: 0;
+}
+
+.form-value {
+  flex: 1;
+  text-align: right;
+  font-size: 27rpx;
+  padding-right: 8rpx;
+}
+
+.chevron {
+  font-size: 34rpx;
+  color: #c3c3bc;
+  line-height: 1;
+}
+
+.placeholder {
+  color: #b9b9b2;
+}
+
+.form-title {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.form-hint {
+  font-size: 21rpx;
+  color: var(--muted);
+  margin-top: 4rpx;
+}
+
+.week-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 26rpx 0 8rpx;
+}
+
+.week-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.mini-btn {
+  font-size: 21rpx;
+  color: var(--muted);
+  background: var(--soft);
+  border-radius: 14rpx;
+  padding: 6rpx 12rpx;
+  margin-left: 8rpx;
+}
+
+.week-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10rpx 0 24rpx;
+}
+
+.week-chip {
+  width: 8.4%;
+  margin: 0.8%;
+  height: 62rpx;
+  border-radius: 14rpx;
+  background: var(--soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23rpx;
+}
+
+.week-chip.selected {
+  background: var(--accent);
+  color: #fff;
+}
+
+.color-row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 22rpx 0 26rpx;
+}
+
+.color-dot {
+  width: 66rpx;
+  height: 66rpx;
+  border-radius: 50%;
+  margin: 0 16rpx 16rpx 0;
+  box-sizing: border-box;
+}
+
+.color-dot.selected {
+  box-shadow: 0 0 0 4rpx #1f1f1c;
+  transform: scale(0.92);
+}
+
+.remark-row {
+  display: flex;
+  padding: 24rpx 0;
+}
+
+.textarea {
+  flex: 1;
+  min-height: 120rpx;
+  font-size: 27rpx;
+  line-height: 1.5;
+  padding: 0;
+}
+
+.save-area {
+  margin-top: 34rpx;
+}
+
+.delete-btn {
+  text-align: center;
+  font-size: 25rpx;
+  padding: 26rpx 0 10rpx;
+}

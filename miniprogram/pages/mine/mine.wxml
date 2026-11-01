@@ -1,0 +1,129 @@
+<view class="page mine-page">
+  <view class="profile-card">
+    <view class="profile-eyebrow">秒见课表</view>
+    <view class="profile-title">{{currentWeekLabel}}</view>
+    <view class="profile-sub">{{semesterLabel}}</view>
+    <view class="stats">
+      <view class="stat">
+        <text class="stat-num">{{stats.courseCount}}</text>
+        <text class="stat-label">课程</text>
+      </view>
+      <view class="stat">
+        <text class="stat-num">{{stats.syncCount}}</text>
+        <text class="stat-label">教务导入</text>
+      </view>
+      <view class="stat">
+        <text class="stat-num">{{stats.manualCount}}</text>
+        <text class="stat-label">手动添加</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-title">课表管理</view>
+  <view class="menu-card">
+    <view class="menu-row" bindtap="onSync">
+      <view class="menu-main">
+        <text class="menu-label">从教务系统导入</text>
+        <text class="menu-hint">{{cloudReady ? '新版正方 · 已配置云开发' : '新版正方 · 需先配置云开发'}}</text>
+      </view>
+      <text class="menu-value">{{cloudReady ? '去导入' : '未配置'}}</text>
+      <text class="chevron">›</text>
+    </view>
+    <view class="menu-row" bindtap="onAdd">
+      <view class="menu-main">
+        <text class="menu-label">手动添加课程</text>
+        <text class="menu-hint">适用于临时课、调课、教务数据不准</text>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+    <view class="menu-row" bindtap="onSettings">
+      <view class="menu-main">
+        <text class="menu-label">学期与节次设置</text>
+        <text class="menu-hint">开学日期、总周数、上课时间</text>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+  </view>
+
+  <view class="section-title">偏好设置</view>
+  <view class="menu-card">
+    <picker
+      mode="selector"
+      range="{{launchOptions}}"
+      range-key="label"
+      value="{{launchIndex}}"
+      bindchange="onLaunchChange"
+    >
+      <view class="menu-row">
+        <view class="menu-main">
+          <text class="menu-label">打开小程序显示</text>
+          <text class="menu-hint">默认课表；下次冷启动生效</text>
+        </view>
+        <text class="menu-value">{{launchOptions[launchIndex].label}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="section-title">数据</view>
+  <view class="menu-card">
+    <view class="menu-row" bindtap="onExport">
+      <view class="menu-main">
+        <text class="menu-label">导出课表</text>
+        <text class="menu-hint">分享 JSON / CSV / ICS，或复制 JSON</text>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+    <view class="menu-row" bindtap="onImportData">
+      <view class="menu-main">
+        <text class="menu-label">导入课表</text>
+        <text class="menu-hint">从微信文件、剪贴板导入，或手动添加</text>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+    <view class="menu-row" bindtap="onClear">
+      <view class="menu-main">
+        <text class="menu-label danger-text">清空课表</text>
+        <text class="menu-hint">删除全部课程</text>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+  </view>
+
+  <view class="section-title">帮助</view>
+  <view class="menu-card">
+    <view class="menu-row" bindtap="onJoinGroup">
+      <view class="menu-main">
+        <text class="menu-label">加入交流群</text>
+        <text class="menu-hint">QQ 群 1124141900 · 点击复制群号</text>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+    <view class="menu-row contact-row">
+      <view class="menu-main">
+        <text class="menu-label">问题反馈</text>
+        <text class="menu-hint">通过小程序客服留言</text>
+      </view>
+      <text class="chevron">›</text>
+      <button
+        class="contact-hit"
+        open-type="contact"
+        session-from="mine-page"
+        hover-class="none"
+      ></button>
+    </view>
+  </view>
+
+  <view class="section-title">关于</view>
+  <view class="menu-card">
+    <view class="menu-row" bindtap="onAbout" bindlongpress="onAdmin">
+      <view class="menu-main">
+        <text class="menu-label">隐私说明与开源声明</text>
+        <text class="menu-hint">数据如何保存、账号如何使用</text>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+  </view>
+
+  <view class="footer">秒见课表 · 无广告 · 课表保存在本机</view>
+</view>

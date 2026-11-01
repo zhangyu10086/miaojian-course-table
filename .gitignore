@@ -1,0 +1,14 @@
+node_modules/
+miniprogram_npm/
+cloudfunctions/**/node_modules/
+project.private.config.json
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# 本地私有配置，不提交
+miniprogram/config.js
+.env
+.env.*
+*.local.js

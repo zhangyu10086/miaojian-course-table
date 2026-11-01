@@ -1,0 +1,64 @@
+<view class="page today-page">
+  <view class="today-head">
+    <view>
+      <view class="today-title">今天</view>
+      <view class="today-sub">{{dateLabel}} · {{weekdayLabel}} · {{weekLabel}}</view>
+    </view>
+    <view class="now">{{nowLabel}}</view>
+  </view>
+
+  <view wx:if="{{!semesterSet}}" class="banner" bindtap="onSetup">
+    <text>设置学期开始日期后，才能准确显示当前周</text>
+    <text class="banner-action">去设置</text>
+  </view>
+
+  <view
+    wx:if="{{nextCourse}}"
+    class="next-card"
+    style="background: {{nextCourse.color}};"
+    data-id="{{nextCourse.id}}"
+    bindtap="onCourseTap"
+  >
+    <view class="next-eyebrow">下一节课</view>
+    <view class="next-name">{{nextCourse.name}}</view>
+    <view class="next-meta">{{nextCourse.timeLabel}} · {{nextCourse.location || '地点未填写'}}</view>
+    <view class="next-countdown">{{nextCountdown}}</view>
+  </view>
+
+  <view wx:if="{{!nextCourse && hasCourses && semesterSet}}" class="all-done">
+    今天的课已经结束，好好休息。
+  </view>
+
+  <view class="section-title">今日课程</view>
+
+  <view wx:if="{{isEmpty}}" class="empty-card">
+    <view class="empty-title">{{hasCourses ? '今天没有课' : '还没有课程'}}</view>
+    <view class="empty-desc">
+      {{hasCourses ? '可以切换到课表页查看其他日期，或者手动加一节课。' : '从教务系统导入，或者先手动添加一门课程。'}}
+    </view>
+    <view class="empty-actions">
+      <view class="ghost-btn" bindtap="onAdd">手动添加</view>
+      <view class="primary-btn" bindtap="onSync">从教务导入</view>
+    </view>
+  </view>
+
+  <view wx:else>
+    <view
+      wx:for="{{courses}}"
+      wx:key="id"
+      class="today-item"
+      data-id="{{item.id}}"
+      bindtap="onCourseTap"
+    >
+      <view class="today-time">
+        <text>{{item.startTime}}</text>
+        <text>{{item.endTime}}</text>
+      </view>
+      <view class="today-main">
+        <view class="today-name">{{item.name}}</view>
+        <view class="today-meta">{{item.location || '地点未填写'}} · {{item.teacher || '教师未填写'}}</view>
+      </view>
+      <view class="status {{item.statusClass}}">{{item.statusLabel}}</view>
+    </view>
+  </view>
+</view>

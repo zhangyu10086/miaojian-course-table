@@ -1,0 +1,147 @@
+.picker-page {
+  padding: 24rpx 24rpx 60rpx;
+}
+
+.search-card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 0 26rpx;
+}
+
+.search-input {
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: 28rpx;
+  padding: 0;
+}
+
+.placeholder {
+  color: #b9b9b2;
+}
+
+.picker-hint {
+  font-size: 21rpx;
+  color: var(--muted);
+  line-height: 1.55;
+  padding: 14rpx 6rpx 0;
+}
+
+.section {
+  margin-top: 28rpx;
+}
+
+.section-title {
+  font-size: 24rpx;
+  color: var(--muted);
+  padding: 0 6rpx 12rpx;
+}
+
+.list-card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 0 26rpx;
+}
+
+.school-row {
+  display: flex;
+  align-items: center;
+  min-height: 104rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.list-card > .school-row:last-child {
+  border-bottom: none;
+}
+
+.school-main {
+  flex: 1;
+  min-width: 0;
+  padding: 16rpx 0;
+}
+
+.school-title {
+  display: flex;
+  align-items: center;
+}
+
+.school-name {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.school-tag {
+  font-size: 18rpx;
+  border-radius: 8rpx;
+  padding: 2rpx 8rpx;
+  margin-left: 10rpx;
+  flex-shrink: 0;
+}
+
+.school-tag.secure {
+  color: #1b6b3a;
+  background: #e8f7ee;
+}
+
+.school-tag.pending {
+  color: #8a6d00;
+  background: #fff7e0;
+}
+
+.school-tag.manual {
+  color: var(--muted);
+  background: var(--soft);
+}
+
+.school-host {
+  display: block;
+  font-size: 21rpx;
+  color: var(--muted);
+  margin-top: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  font-size: 34rpx;
+  color: #c3c3bc;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.manual-card {
+  margin-top: 34rpx;
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 26rpx;
+  display: flex;
+  align-items: center;
+}
+
+.manual-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.manual-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.manual-hint {
+  display: block;
+  font-size: 21rpx;
+  color: var(--muted);
+  margin-top: 4rpx;
+}
+
+.picker-loading {
+  padding: 90rpx 24rpx;
+  text-align: center;
+}
+
+.picker-loading-text {
+  font-size: 24rpx;
+  color: var(--muted);
+}

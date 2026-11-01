@@ -1,0 +1,14 @@
+{
+  "name": "course-table",
+  "version": "1.0.0",
+  "private": true,
+  "description": "微信小程序课程表（自用）",
+  "scripts": {
+    "test": "node --test tests/parser.test.js tests/date.test.js tests/layout.test.js tests/store.test.js tests/structure.test.js tests/pages-load.test.js tests/cloud-flow.test.js tests/schools.test.js tests/school-registry.test.js tests/notices.test.js tests/markdown.test.js tests/rsa.test.js tests/week-panels.test.js tests/secure-import.test.js tests/school-access.test.js tests/school-admin.test.js tests/transfer.test.js",
+    "schools:aliases": "node scripts/build-school-aliases.js",
+    "audit": "node scripts/audit-pages.js"
+  },
+  "devDependencies": {
+    "pinyin-pro": "^3.29.5"
+  }
+}

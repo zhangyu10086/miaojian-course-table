@@ -1,0 +1,85 @@
+<view class="page settings-page">
+  <view class="form-card">
+    <view class="form-title-block">
+      <view class="form-title">学期</view>
+      <view class="form-hint">第 1 周的第一天，用来计算“现在是第几周”</view>
+    </view>
+    <picker mode="date" value="{{semesterStartDate}}" bindchange="onStartDateChange">
+      <view class="form-row">
+        <text class="form-label">开始日期</text>
+        <text class="form-value">{{semesterStartDate || '未设置'}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+    <view wx:if="{{semesterStartDate}}" class="clear-row" bindtap="onClearStartDate">清除开始日期</view>
+    <picker
+      mode="selector"
+      range="{{totalWeeksOptions}}"
+      range-key="label"
+      value="{{totalWeeksIndex}}"
+      bindchange="onTotalWeeksChange"
+    >
+      <view class="form-row">
+        <text class="form-label">总周数</text>
+        <text class="form-value">{{totalWeeksOptions[totalWeeksIndex].label}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+    <picker
+      mode="selector"
+      range="{{firstDayOptions}}"
+      range-key="label"
+      value="{{firstDayIndex}}"
+      bindchange="onFirstDayChange"
+    >
+      <view class="form-row">
+        <text class="form-label">每周起始日</text>
+        <text class="form-value">{{firstDayOptions[firstDayIndex].label}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+    <view class="form-row">
+      <view>
+        <text class="form-label inline">显示周末</text>
+        <text class="form-hint">关闭后只显示周一到周五</text>
+      </view>
+      <switch checked="{{showWeekends}}" color="#1f1f1c" bindchange="onShowWeekendsChange" />
+    </view>
+  </view>
+
+  <view class="form-card">
+    <view class="form-title-block">
+      <view class="form-title">节次时间</view>
+      <view class="form-hint">按学校作息修改，课表上的时间轴会跟着变</view>
+    </view>
+    <view wx:for="{{sections}}" wx:key="number" class="section-row">
+      <text class="section-no">{{item.number}}</text>
+      <picker
+        mode="time"
+        value="{{item.startTime}}"
+        data-index="{{index}}"
+        data-field="startTime"
+        bindchange="onSectionTimeChange"
+      >
+        <view class="time-pill">{{item.startTime}}</view>
+      </picker>
+      <text class="time-dash">—</text>
+      <picker
+        mode="time"
+        value="{{item.endTime}}"
+        data-index="{{index}}"
+        data-field="endTime"
+        bindchange="onSectionTimeChange"
+      >
+        <view class="time-pill">{{item.endTime}}</view>
+      </picker>
+      <text class="section-remove" data-index="{{index}}" bindtap="onRemoveSection">删除</text>
+    </view>
+    <view class="section-actions">
+      <text class="mini-btn" bindtap="onAddSection">添加一节</text>
+      <text class="mini-btn" bindtap="onResetSections">恢复默认</text>
+    </view>
+  </view>
+
+  <view class="primary-btn" bindtap="onSave">保存设置</view>
+</view>

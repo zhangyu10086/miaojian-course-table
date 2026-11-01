@@ -1,0 +1,29 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 安装根依赖
+        run: npm ci
+
+      - name: 安装云函数依赖
+        run: npm ci --prefix cloudfunctions/syncSchedule
+
+      - name: 单元测试
+        run: npm test
+
+      - name: 页面审计
+        run: npm run audit

@@ -1,0 +1,87 @@
+.edit-page {
+  padding: 28rpx 24rpx 60rpx;
+}
+
+.state {
+  padding: 120rpx 40rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--muted);
+}
+
+.meta-card {
+  background: var(--card);
+  border-radius: 20rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.meta-row {
+  font-size: 21rpx;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.sep {
+  margin: 0 8rpx;
+}
+
+.form-card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 26rpx;
+}
+
+.field-label {
+  font-size: 24rpx;
+  color: var(--muted);
+  margin: 22rpx 0 10rpx;
+}
+
+.field-label:first-child {
+  margin-top: 0;
+}
+
+.field-input {
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0 18rpx;
+  font-size: 27rpx;
+  background: var(--soft);
+  border-radius: 14rpx;
+}
+
+.field-textarea {
+  width: 100%;
+  min-height: 300rpx;
+  padding: 18rpx;
+  font-size: 26rpx;
+  line-height: 1.6;
+  background: var(--soft);
+  border-radius: 14rpx;
+  box-sizing: border-box;
+}
+
+.field-count {
+  text-align: right;
+  font-size: 20rpx;
+  color: var(--muted);
+  margin: 8rpx 4rpx 24rpx;
+}
+
+.field-hint {
+  font-size: 20rpx;
+  color: var(--muted);
+  margin: 8rpx 4rpx 0;
+}
+
+.save-btn {
+  margin-top: 30rpx;
+}
+
+.edit-foot {
+  text-align: center;
+  font-size: 20rpx;
+  color: var(--muted);
+  margin-top: 22rpx;
+}

@@ -1,0 +1,261 @@
+<view class="page schedule-page">
+  <view class="topbar">
+    <view class="week-title week-select" bindtap="onWeekTitleTap">
+      <text>第 {{week}} 周</text>
+      <text class="caret">▾</text>
+    </view>
+    <view class="top-actions">
+      <view class="notice-btn {{noticeUnread ? 'unread' : ''}}" bindtap="onNoticeTap">
+        <image class="notice-icon" src="/assets/notice.png" mode="aspectFit"></image>
+        <view wx:if="{{noticeUnread}}" class="notice-dot"></view>
+      </view>
+      <view class="arrow" bindtap="onPrevWeek">‹</view>
+      <view class="arrow" bindtap="onNextWeek">›</view>
+    </view>
+  </view>
+
+  <view class="subbar">
+    <view class="week-range">{{weekRange}}</view>
+    <view wx:if="{{!weekIsCurrent}}" class="today-pill" bindtap="onTodayWeek">回到本周</view>
+  </view>
+
+  <view wx:if="{{showOnboarding}}" class="onboard-card">
+    <view class="onboard-title">欢迎使用秒见课表</view>
+    <view class="onboard-sub">三步就能看到你的课表</view>
+
+    <view class="onboard-step">
+      <view class="step-no">1</view>
+      <view class="step-main">
+        <view class="step-title">设置学期开始日期</view>
+        <view class="step-desc">填第 1 周的周一，周次和「今日」才会准</view>
+      </view>
+    </view>
+    <view class="onboard-step">
+      <view class="step-no">2</view>
+      <view class="step-main">
+        <view class="step-title">导入或添加课程</view>
+        <view class="step-desc">支持教务导入，也可以点空白格子手动添加</view>
+      </view>
+    </view>
+    <view class="onboard-step">
+      <view class="step-no">3</view>
+      <view class="step-main">
+        <view class="step-title">开始使用</view>
+        <view class="step-desc">看周课表、下一节课，课表保存在本机</view>
+      </view>
+    </view>
+
+    <view class="primary-btn onboard-btn" bindtap="onSettings">先设置学期</view>
+    <view class="onboard-skip" bindtap="onSkipOnboarding">跳过，先随便看看</view>
+  </view>
+
+  <view wx:if="{{!semesterSet && !showOnboarding}}" class="banner" bindtap="onSettings">
+    <text>还没有设置学期开始日期，当前周数可能不准</text>
+    <text class="banner-action">去设置</text>
+  </view>
+
+  <view wx:if="{{isEmpty && !showOnboarding}}" class="empty-card">
+    <view class="empty-title">课表还是空的</view>
+    <view class="empty-desc">从教务系统一键导入，或者点击空白格子手动添加。</view>
+    <view class="empty-actions">
+      <view class="ghost-btn" bindtap="onAddCourse">手动添加</view>
+      <view class="primary-btn" bindtap="onSync">从教务导入</view>
+    </view>
+  </view>
+
+  <view
+    class="week-pager"
+    style="height: {{swiperHeight}}rpx;"
+    bindtouchstart="onPagerTouchStart"
+    bindtouchmove="onPagerTouchMove"
+    bindtouchend="onPagerTouchEnd"
+    bindtouchcancel="onPagerTouchCancel"
+  >
+    <view
+      class="week-track {{pagerTransition ? 'animating' : ''}}"
+      style="transform: translateX({{trackX}}px);"
+    >
+      <view
+        wx:for="{{weekPanels}}"
+        wx:for-item="panel"
+        wx:key="week"
+        class="week-panel"
+      >
+        <view class="grid-head">
+          <view class="time-col head-time">
+            <text class="panel-week">{{panel.week}}周</text>
+          </view>
+          <view
+            wx:for="{{panel.days}}"
+            wx:for-item="day"
+            wx:key="day"
+            class="day-head {{day.isToday ? 'today' : ''}}"
+          >
+            <text class="day-label">{{day.label}}</text>
+            <text class="day-date">{{day.dateLabel}}</text>
+          </view>
+        </view>
+
+        <view class="grid-body" style="height: {{gridHeight}}rpx;">
+          <view class="time-col">
+            <view
+              wx:for="{{sections}}"
+              wx:for-item="section"
+              wx:key="number"
+              class="time-cell"
+              style="height: {{rowHeight}}rpx;"
+            >
+              <text class="section-no">{{section.number}}</text>
+              <text class="section-time">{{section.startTime}}</text>
+              <text class="section-time">{{section.endTime}}</text>
+            </view>
+          </view>
+
+          <view
+            wx:for="{{panel.days}}"
+            wx:for-item="day"
+            wx:key="day"
+            class="day-col {{day.isToday ? 'today' : ''}}"
+          >
+            <view
+              wx:for="{{sections}}"
+              wx:for-item="section"
+              wx:key="number"
+              class="grid-cell"
+              style="height: {{rowHeight}}rpx;"
+              data-day="{{day.day}}"
+              data-section="{{section.number}}"
+              bindtap="onCellTap"
+            ></view>
+
+            <view
+              wx:for="{{day.blocks}}"
+              wx:for-item="courseBlock"
+              wx:key="id"
+              class="course-block"
+              style="top: {{courseBlock.top}}rpx; height: {{courseBlock.height}}rpx; left: {{courseBlock.left}}%; width: {{courseBlock.width}}%;"
+              data-id="{{courseBlock.id}}"
+              catchtap="onBlockTap"
+              catchlongpress="onBlockTap"
+            >
+              <view class="course-inner {{courseBlock.columnCount > 1 ? 'narrow' : ''}}" style="background: {{courseBlock.color}};">
+                <text class="course-name">{{courseBlock.course.name}}</text>
+                <text wx:if="{{courseBlock.height > 150}}" class="course-loc">
+                  {{courseBlock.course.location}}
+                </text>
+                <text wx:if="{{courseBlock.height > 230}}" class="course-teacher">
+                  {{courseBlock.course.teacher}}
+                </text>
+              </view>
+            </view>
+          </view>
+
+          <view
+            wx:for="{{gridLines}}"
+            wx:for-item="lineTop"
+            wx:key="*this"
+            class="grid-line"
+            style="top: {{lineTop}}rpx;"
+          ></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view
+  wx:if="{{weekPickerVisible}}"
+  class="mask"
+  bindtap="closeWeekPicker"
+  catchtouchmove="noop"
+></view>
+<view wx:if="{{weekPickerVisible}}" class="sheet" catchtap="noop">
+  <view class="sheet-handle"></view>
+  <view class="sheet-title">选择周次</view>
+  <view class="week-grid">
+    <view
+      wx:for="{{weekOptions}}"
+      wx:key="week"
+      class="week-chip {{item.week === week ? 'active' : ''}} {{item.isCurrent ? 'current' : ''}}"
+      data-week="{{item.week}}"
+      bindtap="onWeekSelect"
+    >
+      <text>{{item.week}}</text>
+      <view wx:if="{{item.isCurrent}}" class="current-dot"></view>
+    </view>
+  </view>
+</view>
+
+<view
+  wx:if="{{detailVisible}}"
+  class="mask"
+  bindtap="closeDetail"
+  catchtouchmove="noop"
+></view>
+<view wx:if="{{detailVisible}}" class="sheet detail-sheet" catchtap="noop">
+  <view class="sheet-handle"></view>
+  <view class="detail-head" style="background: {{detail.color}};">
+    <text class="detail-name">{{detail.course.name}}</text>
+    <text class="detail-sub">{{detail.timeLabel}} · {{detail.weeksLabel}}</text>
+  </view>
+  <view class="detail-body">
+    <view class="detail-row">
+      <text class="detail-label">教师</text>
+      <text>{{detail.course.teacher || '未填写'}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">地点</text>
+      <text>{{detail.course.location || '未填写'}}</text>
+    </view>
+    <view wx:if="{{detail.course.remark}}" class="detail-row">
+      <text class="detail-label">备注</text>
+      <text>{{detail.course.remark}}</text>
+    </view>
+    <view wx:if="{{detail.course.credit}}" class="detail-row">
+      <text class="detail-label">学分</text>
+      <text>{{detail.course.credit}}</text>
+    </view>
+  </view>
+  <view class="detail-actions">
+    <view class="ghost-btn" bindtap="onEditCourse">编辑</view>
+    <view class="ghost-btn danger-text" bindtap="onDeleteCourse">删除</view>
+  </view>
+</view>
+
+<view
+  wx:if="{{noticeVisible}}"
+  class="mask"
+  bindtap="closeNotices"
+  catchtouchmove="noop"
+></view>
+<view wx:if="{{noticeVisible}}" class="sheet notice-sheet" catchtap="noop">
+  <view class="sheet-handle"></view>
+  <view class="notice-sheet-head">
+    <view class="sheet-title notice-sheet-title">公告</view>
+    <view wx:if="{{noticeUnreadCount}}" class="notice-unread-count">{{noticeUnreadCount}} 条未读</view>
+  </view>
+  <scroll-view scroll-y class="notice-list">
+    <view wx:if="{{!notices.length}}" class="notice-empty">暂时没有公告</view>
+    <view
+      wx:for="{{notices}}"
+      wx:key="id"
+      class="notice-card {{item.unread ? 'unread' : 'read'}}"
+    >
+      <view class="notice-card-head">
+        <view class="notice-state-dot {{item.unread ? 'unread' : 'read'}}"></view>
+        <text class="notice-card-title">{{item.title}}</text>
+        <text wx:if="{{item.pinned}}" class="notice-pin-badge">置顶</text>
+      </view>
+      <view class="notice-meta">
+        <text>{{item.source}}</text>
+        <text class="notice-meta-sep">·</text>
+        <text>{{item.relativeLabel}}</text>
+      </view>
+      <view class="notice-summary">{{item.summary || item.content}}</view>
+      <view class="notice-card-foot">
+        <text class="notice-views">{{item.views}} 次浏览</text>
+        <view class="notice-detail-btn" data-id="{{item.id}}" catchtap="onNoticeDetail">查看详情</view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

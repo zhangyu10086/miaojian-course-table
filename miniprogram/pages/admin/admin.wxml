@@ -1,0 +1,59 @@
+<view class="page admin-page">
+  <view class="admin-head">
+    <view class="admin-title">管理员</view>
+    <view class="admin-sub">只有管理员能看到这里的入口</view>
+  </view>
+
+  <view wx:if="{{checking}}" class="admin-card admin-status">
+    正在检查管理员身份…
+  </view>
+
+  <view wx:elif="{{!admin && !schoolAdmin}}" class="admin-card">
+    <view class="admin-status">{{configured ? '当前微信不是管理员' : '还没有配置管理员'}}</view>
+    <view class="admin-desc">当前微信的 openid：</view>
+    <view class="openid-box">
+      <text class="openid-text" selectable>{{openid || '获取中…'}}</text>
+      <text class="copy-link" bindtap="onCopyOpenid">复制</text>
+    </view>
+    <view class="copy-hint">复制不了？长按上面的 openid 手动选择复制</view>
+    <view class="admin-steps">
+      <view>1. 云开发控制台 → 云函数 → publishNotice → 配置</view>
+      <view>2. 环境变量添加 ADMIN_OPENIDS，值填上面的 openid</view>
+      <view>3. manageSchool 也要配置同一个 ADMIN_OPENIDS</view>
+      <view>4. 保存后点「刷新管理员状态」</view>
+    </view>
+    <view wx:if="{{error}}" class="admin-error">{{error}}</view>
+    <view wx:if="{{schoolError}}" class="admin-error">{{schoolError}}</view>
+    <view class="ghost-btn admin-btn" bindtap="check">刷新管理员状态</view>
+  </view>
+
+  <block wx:else>
+    <view class="entry-card" bindtap="onNotices">
+      <view class="entry-main">
+        <view class="entry-title-row">
+          <text class="entry-title">公告管理</text>
+          <text class="entry-tag {{admin ? 'ok' : 'warn'}}">{{admin ? '正常' : '未配置'}}</text>
+        </view>
+        <view class="entry-desc">发布、编辑、置顶、删除公告</view>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+
+    <view class="entry-card" bindtap="onSchools">
+      <view class="entry-main">
+        <view class="entry-title-row">
+          <text class="entry-title">学校管理</text>
+          <text class="entry-tag {{schoolAdmin ? 'ok' : 'warn'}}">{{schoolAdmin ? '正常' : '未配置'}}</text>
+        </view>
+        <view class="entry-desc">新增学校、开关自动导入、删除学校</view>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+
+    <view wx:if="{{!schoolAdmin && schoolError}}" class="admin-hint">{{schoolError}}</view>
+
+    <view class="ghost-btn admin-btn" bindtap="check">刷新管理员状态</view>
+
+    <view class="admin-foot">新增学校后约 1 分钟生效，用户重新打开学校列表即可看到。</view>
+  </block>
+</view>

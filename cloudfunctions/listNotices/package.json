@@ -1,0 +1,9 @@
+{
+  "name": "listNotices",
+  "version": "1.0.0",
+  "description": "读取云数据库中的公告",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}
