@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "exportedAt": 0,
+  "settings": null,
+  "courses": [
+    {
+      "name": "高等数学",
+      "teacher": "张老师",
+      "location": "A101",
+      "day": 1,
+      "startSection": 1,
+      "endSection": 2,
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "colorIndex": 3,
+      "remark": "第 8 周随堂测验",
+      "credit": 5,
+      "source": "manual"
+    },
+    {
+      "name": "大学英语",
+      "teacher": "李老师",
+      "location": "B203",
+      "day": 2,
+      "startSection": 3,
+      "endSection": 4,
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "colorIndex": 1,
+      "remark": "",
+      "credit": 4,
+      "source": "manual"
+    },
+    {
+      "name": "数据结构",
+      "teacher": "王老师",
+      "location": "C305",
+      "day": 3,
+      "startSection": 1,
+      "endSection": 2,
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "colorIndex": 2,
+      "remark": "",
+      "credit": 4,
+      "source": "manual"
+    },
+    {
+      "name": "计算机组成原理",
+      "teacher": "赵老师",
+      "location": "实验楼 401",
+      "day": 3,
+      "startSection": 3,
+      "endSection": 4,
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "colorIndex": 5,
+      "remark": "",
+      "credit": 4,
+      "source": "manual"
+    },
+    {
+      "name": "软件工程",
+      "teacher": "钱老师",
+      "location": "信息楼 205",
+      "day": 3,
+      "startSection": 3,
+      "endSection": 4,
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "colorIndex": 4,
+      "remark": "与计算机组成原理同一时段，用于展示冲突并排",
+      "credit": 3,
+      "source": "manual"
+    },
+    {
+      "name": "操作系统",
+      "teacher": "孙老师",
+      "location": "信息楼 205",
+      "day": 4,
+      "startSection": 5,
+      "endSection": 6,
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "colorIndex": 6,
+      "remark": "",
+      "credit": 4,
+      "source": "manual"
+    },
+    {
+      "name": "大学物理",
+      "teacher": "周老师",
+      "location": "理科楼 102",
+      "day": 5,
+      "startSection": 7,
+      "endSection": 8,
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "colorIndex": 0,
+      "remark": "",
+      "credit": 4,
+      "source": "manual"
+    },
+    {
+      "name": "体育",
+      "teacher": "吴老师",
+      "location": "东操场",
+      "day": 1,
+      "startSection": 9,
+      "endSection": 10,
+      "weeks": [1, 3, 5, 7, 9, 11, 13, 15],
+      "colorIndex": 8,
+      "remark": "单周上课",
+      "credit": 1,
+      "source": "manual"
+    }
+  ]
+}

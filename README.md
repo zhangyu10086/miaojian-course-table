@@ -10,14 +10,16 @@
 
 ## 截图
 
-> 建议放 3–5 张：周课表、今日页、课程编辑、教务导入、我的页。
-> 图片放 `docs/screenshots/`，例如：
->
-> ```markdown
-> | 周课表 | 今日 | 教务导入 |
-> |---|---|---|
-> | ![](docs/screenshots/schedule.png) | ![](docs/screenshots/today.png) | ![](docs/screenshots/sync.png) |
-> ```
+| 周课表 | 今日 |
+|---|---|
+| ![](docs/screenshots/schedule.jpg) | ![](docs/screenshots/today.jpg) |
+
+| 教务导入 | 我的 |
+|---|---|
+| ![](docs/screenshots/sync.jpg) | ![](docs/screenshots/mine.jpg) |
+
+> 截图使用 `docs/demo-schedule.json` 里的虚构课表，不含真实个人信息。
+> 想本地预览同样效果：我的 → 导入课表 → 选择这个 JSON。
 
 ## 功能
 
