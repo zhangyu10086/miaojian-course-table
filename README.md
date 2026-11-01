@@ -5,6 +5,12 @@
 [![test](https://github.com/zhangyu10086/miaojian-course-table/actions/workflows/test.yml/badge.svg)](https://github.com/zhangyu10086/miaojian-course-table/actions/workflows/test.yml)
 [![license](https://img.shields.io/github/license/zhangyu10086/miaojian-course-table)](LICENSE)
 
+<p align="center">
+  <img src="docs/assets/miniprogram.jpg" width="200" alt="微信扫码打开秒见课表">
+  <br>
+  <sub>微信扫码打开小程序</sub>
+</p>
+
 > 本项目与任何学校官方无关，仅用于个人课表管理。请只登录本人的教务账号。
 > 提审备注、隐私指引和上架清单见 `docs/`，版本流程见 `docs/release.md`，手机端密码加密见 `docs/client-encryption.md`。
 
