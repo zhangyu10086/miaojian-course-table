@@ -20,7 +20,8 @@ jobs:
         run: npm ci
 
       - name: 安装云函数依赖
-        run: npm ci --prefix cloudfunctions/syncSchedule
+        working-directory: cloudfunctions/syncSchedule
+        run: npm ci
 
       - name: 单元测试
         run: npm test
