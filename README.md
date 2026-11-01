@@ -1,9 +1,15 @@
-# 秒见课表（微信小程序）
+<h1 align="center">秒见课表（微信小程序）</h1>
 
-一个开源的微信小程序课程表：周视图、单双周、课程冲突并排、今日/下一节课、手动增删改、新版正方教务系统导入、课表文件导入导出。
+<p align="center">一个开源的微信小程序课程表：周视图、单双周、课程冲突并排、今日/下一节课、手动增删改、新版正方教务系统导入、课表文件导入导出。</p>
 
-[![test](https://github.com/zhangyu10086/miaojian-course-table/actions/workflows/test.yml/badge.svg)](https://github.com/zhangyu10086/miaojian-course-table/actions/workflows/test.yml)
-[![license](https://img.shields.io/github/license/zhangyu10086/miaojian-course-table)](LICENSE)
+<p align="center">
+  <a href="https://github.com/zhangyu10086/miaojian-course-table/actions/workflows/test.yml">
+    <img src="https://github.com/zhangyu10086/miaojian-course-table/actions/workflows/test.yml/badge.svg" alt="test">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/zhangyu10086/miaojian-course-table" alt="license">
+  </a>
+</p>
 
 <p align="center">
   <img src="docs/assets/miniprogram.jpg" width="200" alt="微信扫码打开秒见课表">
