@@ -1,6 +1,13 @@
-<h1 align="center">秒见课表（微信小程序）</h1>
+<p align="center">
+  <img src="docs/assets/logo.png" width="96" alt="秒见课表 logo">
+</p>
 
-一个开源的微信小程序课程表：周视图、单双周、课程冲突并排、今日/下一节课、手动增删改、新版正方教务系统导入、课表文件导入导出。
+<h1 align="center">秒见课表</h1>
+
+<p align="center">
+  <b>打开就看课的微信小程序课程表</b><br>
+  <sub>周视图 · 单双周 · 冲突并排 · 教务导入 · 多格式导出</sub>
+</p>
 
 <p align="center">
   <a href="https://github.com/zhangyu10086/miaojian-course-table/actions/workflows/test.yml">
@@ -9,6 +16,17 @@
   <a href="LICENSE">
     <img src="https://img.shields.io/github/license/zhangyu10086/miaojian-course-table" alt="license">
   </a>
+  <img src="https://img.shields.io/badge/platform-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-07C160" alt="platform">
+  <img src="https://img.shields.io/badge/version-1.3.0-blue" alt="version">
+</p>
+
+<p align="center">
+  <a href="#从这里开始">快速开始</a> ·
+  <a href="#截图">截图</a> ·
+  <a href="#功能">功能</a> ·
+  <a href="https://github.com/zhangyu10086/miaojian-course-table/discussions">讨论区</a> ·
+  <a href="https://github.com/zhangyu10086/miaojian-course-table/issues">问题反馈</a> ·
+  <a href="#交流群">交流群</a>
 </p>
 
 <p align="center">
@@ -20,15 +38,29 @@
 > 本项目与任何学校官方无关，仅用于个人课表管理。请只登录本人的教务账号。
 > 提审备注、隐私指引和上架清单见 `docs/`，版本流程见 `docs/release.md`，手机端密码加密见 `docs/client-encryption.md`。
 
+## 从这里开始
+
+| 我想…… | 去哪里 |
+|---|---|
+| 直接使用 | 微信搜索「秒见课表」，或扫上面的小程序码 |
+| 本地运行源码 | [快速开始](#快速开始本地模式) |
+| 配置教务导入 | [配置教务同步](#配置教务同步) |
+| 添加我的学校 | [学校适配申请](https://github.com/zhangyu10086/miaojian-course-table/issues/new?template=school_request.yml) |
+| 遇到问题 | [常见问题](#常见问题) · [Issues](https://github.com/zhangyu10086/miaojian-course-table/issues) |
+| 参与开发 | [贡献指南](CONTRIBUTING.md) |
+
 ## 截图
 
-| 周课表 | 今日 |
-|---|---|
-| ![](docs/screenshots/schedule.jpg) | ![](docs/screenshots/today.jpg) |
-
-| 教务导入 | 我的 |
-|---|---|
-| ![](docs/screenshots/sync.jpg) | ![](docs/screenshots/mine.jpg) |
+<table align="center">
+  <tr>
+    <td align="center"><img src="docs/screenshots/schedule.jpg" width="240" alt="周课表"><br><sub>周课表</sub></td>
+    <td align="center"><img src="docs/screenshots/today.jpg" width="240" alt="今日"><br><sub>今日 / 下一节课</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/sync.jpg" width="240" alt="教务导入"><br><sub>教务导入</sub></td>
+    <td align="center"><img src="docs/screenshots/mine.jpg" width="240" alt="我的"><br><sub>我的</sub></td>
+  </tr>
+</table>
 
 > 截图使用 `docs/demo-schedule.json` 里的虚构课表，不含真实个人信息。
 > 想本地预览同样效果：我的 → 导入课表 → 选择这个 JSON。
@@ -49,6 +81,9 @@
 - 数据本地保存：课程、设置、登录信息都存在手机本地。
 
 ## 目录结构
+
+<details>
+<summary>点击展开目录结构</summary>
 
 ```
 course-table/
@@ -92,6 +127,8 @@ course-table/
 ├─ licenses/                    # 参考项目的许可证副本
 └─ project.config.json
 ```
+
+</details>
 
 ## 快速开始（本地模式）
 
