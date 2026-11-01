@@ -12,6 +12,7 @@ process.env.ALLOWED_HOSTS = '127.0.0.1'
 
 const sync = require('../cloudfunctions/syncSchedule')
 const rsa = require('../miniprogram/utils/rsa')
+const { decryptPkcs1 } = require('./helpers/pkcs1')
 
 const LOGIN_PAGE =
   '<html><input type="hidden" name="csrftoken" value="abc123">' +
@@ -111,15 +112,7 @@ function createSchoolServer() {
 
       let decrypted = ''
       try {
-        decrypted = crypto
-          .privateDecrypt(
-            {
-              key: session.key.privateKey,
-              padding: crypto.constants.RSA_PKCS1_PADDING
-            },
-            Buffer.from(params.get('mm'), 'base64')
-          )
-          .toString('utf8')
+        decrypted = decryptPkcs1(params.get('mm'), session.key.privateKey)
       } catch (err) {
         // 密文不是用本会话的公钥加密的，学校会当成登录失败
         res.setHeader('Content-Type', 'text/html; charset=utf-8')

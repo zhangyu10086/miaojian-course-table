@@ -2,6 +2,7 @@ const test = require('node:test')
 const assert = require('node:assert/strict')
 const crypto = require('node:crypto')
 const rsa = require('../miniprogram/utils/rsa')
+const { decryptPkcs1 } = require('./helpers/pkcs1')
 
 function createKey(bits, javaStyle) {
   const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
@@ -20,15 +21,7 @@ function createKey(bits, javaStyle) {
 }
 
 function decrypt(cipher, privateKey) {
-  return crypto
-    .privateDecrypt(
-      {
-        key: privateKey,
-        padding: crypto.constants.RSA_PKCS1_PADDING
-      },
-      Buffer.from(cipher, 'base64')
-    )
-    .toString('utf8')
+  return decryptPkcs1(cipher, privateKey)
 }
 
 test('base64 编解码往返', () => {
