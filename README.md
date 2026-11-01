@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="docs/assets/logo.png" width="96" alt="秒见课表 logo">
-</p>
-
 <h1 align="center">秒见课表</h1>
 
 <p align="center">
