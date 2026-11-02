@@ -13,7 +13,7 @@
     <img src="https://img.shields.io/github/license/zhangyu10086/miaojian-course-table" alt="license">
   </a>
   <img src="https://img.shields.io/badge/platform-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-07C160" alt="platform">
-  <img src="https://img.shields.io/badge/version-1.3.0-blue" alt="version">
+  <img src="https://img.shields.io/github/v/release/zhangyu10086/miaojian-course-table" alt="release">
 </p>
 
 <p align="center">
