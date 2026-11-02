@@ -351,10 +351,9 @@ Page({
   },
 
   onPagerTouchStart(event) {
-    if (this._animating) {
-      this._ignoreTouch = true
-      return
-    }
+    // 上一次翻页动画还没结束时，新触摸不再被丢弃，而是先把pending的周次
+    // 立刻应用掉，让手指马上接管。否则快速连滑时第二次会被吞掉。
+    if (this._animating) this.finishCommitNow()
     this._ignoreTouch = false
     if (this._springTimer) {
       clearTimeout(this._springTimer)
@@ -368,6 +367,9 @@ Page({
     this._startTime = Date.now()
     this._lastDx = 0
     this._lastMoveAt = 0
+    this._prevDx = 0
+    this._prevAt = 0
+    this._velocity = 0
     // 如果上一次回弹动画还没结束，先停止它，让手指重新接管。
     if (this.data.pagerTransition) this.setData({ pagerTransition: false })
   },
@@ -389,9 +391,19 @@ Page({
 
     this._lastDx = dx
 
+    // 记录瞬时速度，用于判断「快速轻扫」。
+    // 用整段手势的平均速度会被起手停顿拖慢，短距离快滑容易不翻页。
+    const stamp = Date.now()
+    const dt = stamp - (this._prevAt || 0)
+    if (dt >= 8) {
+      this._velocity = Math.abs(dx - (this._prevDx || 0)) / dt
+      this._prevDx = dx
+      this._prevAt = stamp
+    }
+
     // 慢速拖动时 touchmove 触发得很密集，每次都 setData 会挤占渲染线程，
     // 表现就是「越慢越卡」。这里限制到约 60fps，位移没变化也不更新。
-    const now = Date.now()
+    const now = stamp
     if (now - (this._lastMoveAt || 0) < 16) return
     this._lastMoveAt = now
 
@@ -438,17 +450,19 @@ Page({
     const width = this.getPagerWidth()
     const atFirst = this.data.week <= 1
     const atLast = this.data.week >= this.data.totalWeeks
-    const elapsed = Math.max(Date.now() - this._startTime, 1)
-    const velocity = Math.abs(dx) / elapsed
+
+    // 手指停住后再抬起，速度要按 0 算，避免「按住不动也翻页」。
+    const idle = Date.now() - (this._prevAt || 0) > 120
+    const velocity = idle ? 0 : this._velocity || 0
     const threshold = Math.max(36, width * 0.22)
-    const fast = Math.abs(dx) > 24 && velocity > 0.45
+    const fling = Math.abs(dx) > 14 && velocity > 0.3
 
     if ((atFirst && dx > 0) || (atLast && dx < 0)) {
       this.springBack()
       return
     }
 
-    if (Math.abs(dx) >= threshold || fast) {
+    if (Math.abs(dx) >= threshold || fling) {
       const direction = dx < 0 ? 1 : -1
       const target = this.data.centerIndex + direction
       if (target >= 0 && target < this.data.weekPanels.length) {
@@ -485,7 +499,7 @@ Page({
         this._springTimer = setTimeout(() => {
           this.setData({ pagerTransition: false })
           this._springTimer = null
-        }, 260)
+        }, 190)
       }
     )
   },
@@ -498,6 +512,7 @@ Page({
 
     const width = this.getPagerWidth()
     this._animating = true
+    this._pendingWeek = panel.week
     this._lastDx = 0
     if (this._springTimer) {
       clearTimeout(this._springTimer)
@@ -513,10 +528,29 @@ Page({
         if (this._commitTimer) clearTimeout(this._commitTimer)
         this._commitTimer = setTimeout(() => {
           this._commitTimer = null
-          this.applyWeek(panel.week)
-        }, 260)
+          const week = this._pendingWeek
+          this._pendingWeek = null
+          if (week) this.applyWeek(week)
+        }, 190)
       }
     )
+  },
+
+  // 动画期间又来了新的触摸：立刻把待应用的周次结算掉，
+  // 让新手势从正确的位置开始，避免快速连滑被吞掉。
+  finishCommitNow() {
+    if (!this._animating) return
+    if (this._commitTimer) {
+      clearTimeout(this._commitTimer)
+      this._commitTimer = null
+    }
+    const week = this._pendingWeek
+    this._pendingWeek = null
+    if (week) {
+      this.applyWeek(week)
+    } else {
+      this._animating = false
+    }
   },
 
   onCellTap(event) {
