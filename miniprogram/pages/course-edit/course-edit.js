@@ -433,6 +433,29 @@ Page({
 
   onDelete() {
     if (!this.data.isEdit) return
+
+    const group = this.data.groupId ? store.getCourseGroup(this.data.groupId) : []
+    if (group.length > 1) {
+      wx.showActionSheet({
+        itemList: [
+          '删除整门课（' + group.length + ' 个时段）',
+          '只删除当前时段'
+        ],
+        success: (res) => {
+          if (res.tapIndex === 0) {
+            store.deleteCourseGroup(this.data.groupId)
+            wx.showToast({ title: '已删除', icon: 'success' })
+            setTimeout(() => wx.navigateBack(), 300)
+          } else if (res.tapIndex === 1) {
+            store.deleteCourse(this.data.courseId)
+            wx.showToast({ title: '已删除', icon: 'success' })
+            setTimeout(() => wx.navigateBack(), 300)
+          }
+        }
+      })
+      return
+    }
+
     wx.showModal({
       title: '删除课程',
       content: '确定删除「' + this.data.name + '」吗？',
