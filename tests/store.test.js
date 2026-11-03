@@ -138,3 +138,31 @@ test('addRecentSchool 去重、置顶并限制 5 条', () => {
   assert.equal(recent[0].name, '学校3-新')
   assert.equal(recent.filter((item) => item.baseUrl === 'https://jw3.example.edu.cn').length, 1)
 })
+
+test('upsertCourses 批量写入并共享 groupId', () => {
+  const groupId = store.genGroupId()
+  store.upsertCourses([
+    { name: '高数', day: 1, startSection: 1, endSection: 2, weeks: [1], groupId },
+    { name: '高数', day: 3, startSection: 3, endSection: 4, weeks: [1], groupId }
+  ])
+  const group = store.getCourseGroup(groupId)
+  assert.equal(group.length, 2)
+  assert.equal(group[1].day, 3)
+})
+
+test('getCourses 保留 groupId', () => {
+  store.upsertCourses([{ name: '英语', day: 2, startSection: 1, endSection: 2, weeks: [1], groupId: 'g1' }])
+  assert.equal(store.getCourses()[0].groupId, 'g1')
+})
+
+test('deleteCourseGroup 只删除同组记录', () => {
+  store.upsertCourses([
+    { name: '高数', day: 1, startSection: 1, endSection: 2, weeks: [1], groupId: 'g1' },
+    { name: '高数', day: 3, startSection: 3, endSection: 4, weeks: [1], groupId: 'g1' },
+    { name: '英语', day: 2, startSection: 1, endSection: 2, weeks: [1] }
+  ])
+  store.deleteCourseGroup('g1')
+  const left = store.getCourses()
+  assert.equal(left.length, 1)
+  assert.equal(left[0].name, '英语')
+})

@@ -33,6 +33,10 @@ function genId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
 }
 
+function genGroupId() {
+  return 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
+}
+
 function normalizeSections(sections) {
   if (!Array.isArray(sections) || !sections.length) {
     return clone(DEFAULT_SECTIONS)
@@ -84,6 +88,7 @@ function getCourses() {
       colorIndex: Number(item.colorIndex) || 0,
       remark: String(item.remark || ''),
       credit: Number(item.credit) || 0,
+      groupId: String(item.groupId || ''),
       source: item.source === 'sync' ? 'sync' : 'manual',
       updatedAt: Number(item.updatedAt) || Date.now()
     }))
@@ -101,6 +106,34 @@ function upsertCourse(course) {
   } else {
     list.push(Object.assign({ id: genId() }, course, { updatedAt: Date.now() }))
   }
+  saveCourses(list)
+  return list
+}
+
+// 一次写入多条课程，用于「同一门课多个时段」，id 为空时自动生成
+function upsertCourses(courses) {
+  const list = getCourses()
+  ;(courses || []).forEach((course) => {
+    const index = list.findIndex((item) => item.id && item.id === course.id)
+    const next = Object.assign({}, course, { updatedAt: Date.now() })
+    if (index >= 0) {
+      list[index] = Object.assign({}, list[index], next)
+    } else {
+      list.push(Object.assign({ id: genId() }, next))
+    }
+  })
+  saveCourses(list)
+  return list
+}
+
+function getCourseGroup(groupId) {
+  if (!groupId) return []
+  return getCourses().filter((item) => item.groupId === groupId)
+}
+
+function deleteCourseGroup(groupId) {
+  if (!groupId) return getCourses()
+  const list = getCourses().filter((item) => item.groupId !== groupId)
   saveCourses(list)
   return list
 }
@@ -223,6 +256,10 @@ module.exports = {
   getCourses,
   saveCourses,
   upsertCourse,
+  upsertCourses,
+  getCourseGroup,
+  deleteCourseGroup,
+  genGroupId,
   deleteCourse,
   replaceSyncedCourses,
   clearCourses,
