@@ -103,6 +103,35 @@
         <text class="mini-btn" bindtap="onClearWeeks">清空</text>
       </view>
     </view>
+
+    <view wx:if="{{currentWeekLabel}}" class="week-now">
+      <text class="week-now-text">{{currentWeekLabel}}</text>
+      <text class="week-now-btn" bindtap="onUseCurrentWeek">只选本周</text>
+    </view>
+    <view wx:elif="{{!dateRange}}" class="week-now">
+      <text class="week-now-text">先设置开学日期，才能按日期添加</text>
+      <text class="week-now-btn" bindtap="onGoSettings">去设置</text>
+    </view>
+
+    <view class="date-row">
+      <text class="date-label">按日期添加</text>
+      <picker
+        wx:if="{{dateRange}}"
+        mode="date"
+        start="{{dateRange.start}}"
+        end="{{dateRange.end}}"
+        bindchange="onPickDate"
+      >
+        <view class="date-value">选择日期 ›</view>
+      </picker>
+      <text wx:else class="date-value disabled">请先设置开学日期</text>
+    </view>
+
+    <view wx:if="{{pickedHint}}" class="picked-hint">
+      <text class="picked-text">{{pickedHint}}</text>
+      <text class="picked-link" bindtap="onUseAllWeeks">改为每周都上</text>
+    </view>
+
     <view class="week-grid">
       <view
         wx:for="{{weekChips}}"
@@ -111,7 +140,8 @@
         data-index="{{index}}"
         bindtap="onWeekToggle"
       >
-        {{item.week}}
+        <text class="chip-week">{{item.week}}</text>
+        <text class="chip-date">{{item.label}}</text>
       </view>
     </view>
   </view>

@@ -1,5 +1,6 @@
 const store = require('../../utils/store')
 const courseSlots = require('../../utils/course-slots')
+const dateUtil = require('../../utils/date')
 const { PALETTE } = require('../../utils/constants')
 
 const DAY_LABELS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
@@ -52,10 +53,19 @@ Page({
       ? course.weeks.slice()
       : Array.from({ length: totalWeeks }, (_, index) => index + 1)
 
-    const weekChips = Array.from({ length: totalWeeks }, (_, index) => ({
-      week: index + 1,
-      selected: weeks.indexOf(index + 1) >= 0
+    const labels = dateUtil.weekDateLabels(settings, totalWeeks)
+    const weekChips = labels.map((item) => ({
+      week: item.week,
+      label: item.label,
+      selected: weeks.indexOf(item.week) >= 0
     }))
+
+    const dateRange = dateUtil.semesterDateRange(settings)
+    const nowWeek = dateUtil.getWeekNumber(settings, new Date())
+    const currentWeekLabel =
+      dateRange && nowWeek.week && !nowWeek.before && !nowWeek.after
+        ? '本周是第 ' + nowWeek.week + ' 周 · ' + dateUtil.formatWeekRange(settings, nowWeek.week)
+        : ''
 
     wx.setNavigationBarTitle({ title: course ? '编辑课程' : '添加课程' })
 
@@ -71,6 +81,9 @@ Page({
       syncGroup: group.length > 1,
       weekChips,
       weekCount: weeks.length,
+      dateRange,
+      currentWeekLabel,
+      pickedHint: '',
       colorIndex: course ? course.colorIndex : Math.floor(Math.random() * PALETTE.length),
       remark: course ? course.remark : '',
       credit: course && course.credit ? String(course.credit) : '',
@@ -245,8 +258,69 @@ Page({
   applyChips(chips) {
     this.setData({
       weekChips: chips,
-      weekCount: chips.filter((chip) => chip.selected).length
+      weekCount: chips.filter((chip) => chip.selected).length,
+      pickedHint: ''
     })
+  },
+
+  onUseCurrentWeek() {
+    const settings = store.getSettings()
+    const info = dateUtil.getWeekNumber(settings, new Date())
+    if (!info.week || info.before || info.after) {
+      wx.showToast({ title: '当前不在学期内', icon: 'none' })
+      return
+    }
+    const chips = this.data.weekChips.map((chip) =>
+      Object.assign({}, chip, { selected: chip.week === info.week })
+    )
+    this.setData({ weekChips: chips, weekCount: 1, pickedHint: '' })
+  },
+
+  onUseAllWeeks() {
+    this.onSelectAllWeeks()
+  },
+
+  onPickDate(event) {
+    const settings = store.getSettings()
+    const date = dateUtil.parseDate(event.detail.value)
+    if (!date) return
+
+    const info = dateUtil.getWeekNumber(settings, date)
+    if (!info.week) {
+      wx.showToast({ title: '请先设置开学日期', icon: 'none' })
+      return
+    }
+    if (info.before || info.after) {
+      wx.showToast({ title: '这天不在学期周次范围内', icon: 'none' })
+      return
+    }
+
+    const chips = this.data.weekChips.map((chip) =>
+      Object.assign({}, chip, { selected: chip.week === info.week })
+    )
+    const dateLabel = dateUtil.formatShortDate(date)
+    const day = date.getDay() === 0 ? 7 : date.getDay()
+    const singleSlot = this.data.slots.length === 1
+
+    // 只有一个时段时顺带设置星期；多个时段时只定位周次，避免改错行
+    const slots = singleSlot
+      ? this.data.slots.map((slot, index) =>
+          index === 0 ? Object.assign({}, slot, { day, dayIndex: day - 1 }) : slot
+        )
+      : this.data.slots
+
+    this.setData({
+      weekChips: chips,
+      weekCount: 1,
+      slots,
+      pickedHint: singleSlot
+        ? '已设为 ' + dateLabel + '（第 ' + info.week + ' 周）· 只这一次'
+        : '已定位到第 ' + info.week + ' 周'
+    })
+  },
+
+  onGoSettings() {
+    wx.navigateTo({ url: '/pages/settings/settings' })
   },
 
   onColorSelect(event) {
