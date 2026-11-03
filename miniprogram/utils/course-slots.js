@@ -47,8 +47,27 @@ function slotsFromCourse(course) {
   ]
 }
 
+// 决定保存策略，纯函数便于测试。
+// rebuildGroup：整组重建（编辑已分组课程且勾选同步）
+// needsGroup：本次保存是否需要 groupId（已分组或多时段）
+// firstId：第一条记录沿用的 id（编辑单条时保留，整组重建时重新生成）
+function planSave(options) {
+  const opt = options || {}
+  const isEdit = !!opt.isEdit
+  const courseId = String(opt.courseId || '')
+  const groupId = String(opt.groupId || '')
+  const syncGroup = !!opt.syncGroup
+  const slotCount = Math.max(1, Number(opt.slotCount) || 1)
+
+  const rebuildGroup = isEdit && !!groupId && syncGroup
+  const needsGroup = !!groupId || slotCount > 1
+  const firstId = isEdit && courseId && !rebuildGroup ? courseId : ''
+  return { rebuildGroup, needsGroup, firstId }
+}
+
 module.exports = {
   duplicateSlotIndex,
   buildCourseRecords,
-  slotsFromCourse
+  slotsFromCourse,
+  planSave
 }

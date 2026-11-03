@@ -287,11 +287,17 @@ Page({
         ? this._oldSource
         : 'manual'
 
-    const editingGroup = this.data.isEdit && this.data.groupId && this.data.syncGroup
-    const groupId =
-      editingGroup || (!this.data.isEdit && slots.length > 1)
-        ? this.data.groupId || store.genGroupId()
-        : this.data.groupId || ''
+    const plan = courseSlots.planSave({
+      isEdit: this.data.isEdit,
+      courseId: this.data.courseId,
+      groupId: this.data.groupId,
+      syncGroup: this.data.syncGroup,
+      slotCount: slots.length
+    })
+
+    const groupId = plan.needsGroup
+      ? this.data.groupId || store.genGroupId()
+      : ''
 
     const base = {
       name,
@@ -305,21 +311,14 @@ Page({
       groupId
     }
 
-    if (editingGroup) {
-      // 整组重建：时段增删、改名、改周次都一次同步
+    if (plan.rebuildGroup) {
+      // 整组重建：时段增删、改名、改周次一次同步
       store.deleteCourseGroup(this.data.groupId)
-      store.upsertCourses(courseSlots.buildCourseRecords(slots, base))
-    } else if (!this.data.isEdit && slots.length > 1) {
-      // 新增多时段：所有时段一起写入，共享新生成的 groupId
-      store.upsertCourses(courseSlots.buildCourseRecords(slots, base))
-    } else {
-      const records = courseSlots.buildCourseRecords(slots, base)
-      // 编辑已有课程才带 id，新增课程交给 store 自动生成稳定 id
-      if (this.data.courseId) {
-        records[0].id = this.data.courseId
-      }
-      store.upsertCourses([records[0]])
     }
+
+    const records = courseSlots.buildCourseRecords(slots, base)
+    if (plan.firstId) records[0].id = plan.firstId
+    store.upsertCourses(records)
 
     wx.showToast({ title: '已保存', icon: 'success' })
     setTimeout(() => wx.navigateBack(), 350)

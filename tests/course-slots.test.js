@@ -47,3 +47,42 @@ test('slotsFromCourse 缺 endSection 时回退到 startSection', () => {
   assert.equal(slots[0].startSection, 3)
   assert.equal(slots[0].endSection, 3)
 })
+
+test('planSave 新增单时段不建组', () => {
+  const plan = slotsUtil.planSave({ isEdit: false, slotCount: 1 })
+  assert.equal(plan.needsGroup, false)
+  assert.equal(plan.rebuildGroup, false)
+  assert.equal(plan.firstId, '')
+})
+
+test('planSave 新增多时段建组', () => {
+  const plan = slotsUtil.planSave({ isEdit: false, slotCount: 3 })
+  assert.equal(plan.needsGroup, true)
+  assert.equal(plan.firstId, '')
+})
+
+test('planSave 编辑独立课程扩展为多时段', () => {
+  const plan = slotsUtil.planSave({
+    isEdit: true,
+    courseId: 'c1',
+    groupId: '',
+    syncGroup: false,
+    slotCount: 2
+  })
+  assert.equal(plan.needsGroup, true)
+  assert.equal(plan.rebuildGroup, false)
+  assert.equal(plan.firstId, 'c1')
+})
+
+test('planSave 编辑已分组课程并同步时整组重建', () => {
+  const plan = slotsUtil.planSave({
+    isEdit: true,
+    courseId: 'c1',
+    groupId: 'g1',
+    syncGroup: true,
+    slotCount: 2
+  })
+  assert.equal(plan.needsGroup, true)
+  assert.equal(plan.rebuildGroup, true)
+  assert.equal(plan.firstId, '')
+})
