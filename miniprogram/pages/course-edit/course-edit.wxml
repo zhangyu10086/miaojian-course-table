@@ -36,37 +36,58 @@
   </view>
 
   <view class="form-card">
-    <picker mode="selector" range="{{days}}" value="{{dayIndex}}" bindchange="onDayChange">
-      <view class="form-row">
-        <text class="form-label">星期</text>
-        <text class="form-value">{{days[dayIndex]}}</text>
-        <text class="chevron">›</text>
-      </view>
-    </picker>
-    <picker
-      mode="selector"
-      range="{{sectionLabels}}"
-      value="{{startIndex}}"
-      bindchange="onStartChange"
-    >
-      <view class="form-row">
-        <text class="form-label">开始节次</text>
-        <text class="form-value">{{sectionLabels[startIndex]}}</text>
-        <text class="chevron">›</text>
-      </view>
-    </picker>
-    <picker
-      mode="selector"
-      range="{{sectionLabels}}"
-      value="{{endIndex}}"
-      bindchange="onEndChange"
-    >
-      <view class="form-row">
-        <text class="form-label">结束节次</text>
-        <text class="form-value">{{sectionLabels[endIndex]}}</text>
-        <text class="chevron">›</text>
-      </view>
-    </picker>
+    <view class="slot-head">
+      <view class="form-title">上课时间</view>
+      <view class="form-hint">可以添加多个时间段，节次可以不同</view>
+    </view>
+
+    <view wx:for="{{slots}}" wx:key="key" class="slot-row">
+      <picker
+        mode="selector"
+        range="{{days}}"
+        value="{{item.dayIndex}}"
+        data-index="{{index}}"
+        bindchange="onSlotDayChange"
+      >
+        <view class="slot-picker">{{days[item.dayIndex]}}</view>
+      </picker>
+
+      <picker
+        mode="selector"
+        range="{{sectionLabels}}"
+        value="{{item.startIndex}}"
+        data-index="{{index}}"
+        bindchange="onSlotStartChange"
+      >
+        <view class="slot-picker">第 {{item.startSection}} 节</view>
+      </picker>
+
+      <text class="slot-dash">-</text>
+
+      <picker
+        mode="selector"
+        range="{{sectionLabels}}"
+        value="{{item.endIndex}}"
+        data-index="{{index}}"
+        bindchange="onSlotEndChange"
+      >
+        <view class="slot-picker">第 {{item.endSection}} 节</view>
+      </picker>
+
+      <text
+        wx:if="{{slots.length > 1}}"
+        class="slot-remove"
+        data-index="{{index}}"
+        catchtap="onRemoveSlot"
+      >删除</text>
+    </view>
+
+    <view class="slot-add" bindtap="onAddSlot">+ 添加时间段</view>
+
+    <view wx:if="{{isEdit && groupCount > 1}}" class="sync-row" bindtap="onToggleSyncGroup">
+      <text class="sync-box {{syncGroup ? 'checked' : ''}}">{{syncGroup ? '✓' : ''}}</text>
+      <text class="sync-text">同时修改这门课的其他 {{groupCount - 1}} 个时段</text>
+    </view>
   </view>
 
   <view class="form-card">

@@ -153,3 +153,72 @@
   font-size: 25rpx;
   padding: 26rpx 0 10rpx;
 }
+
+.slot-head {
+  margin-bottom: 14rpx;
+}
+
+.slot-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14rpx;
+}
+
+.slot-picker {
+  padding: 16rpx 14rpx;
+  background: var(--soft);
+  border-radius: 12rpx;
+  font-size: 25rpx;
+}
+
+.slot-row > picker {
+  margin-right: 10rpx;
+}
+
+.slot-dash {
+  margin-right: 10rpx;
+  color: var(--muted);
+}
+
+.slot-remove {
+  margin-left: auto;
+  font-size: 22rpx;
+  color: var(--danger);
+}
+
+.slot-add {
+  padding: 18rpx 0;
+  text-align: center;
+  font-size: 25rpx;
+  color: var(--text);
+  border: 1rpx dashed var(--line);
+  border-radius: 14rpx;
+}
+
+.sync-row {
+  display: flex;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+.sync-box {
+  width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  border: 1rpx solid var(--line);
+  font-size: 22rpx;
+  margin-right: 12rpx;
+}
+
+.sync-box.checked {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.sync-text {
+  font-size: 23rpx;
+  color: var(--muted);
+}
