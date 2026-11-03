@@ -89,14 +89,9 @@ Page({
   },
 
   exportJsonFile() {
-    const payload = {
-      version: 1,
-      exportedAt: Date.now(),
-      settings: store.getSettings(),
-      courses: store.getCourses()
-    }
+    const content = transfer.toJson(store.getCourses(), store.getSettings())
     transferFile
-      .shareText(JSON.stringify(payload, null, 2), 'json', this.exportBaseName())
+      .shareText(content, 'json', this.exportBaseName())
       .catch((err) => this.handleTransferError(err))
   },
 
@@ -126,14 +121,9 @@ Page({
   },
 
   copyJson() {
-    const payload = {
-      version: 1,
-      exportedAt: Date.now(),
-      settings: store.getSettings(),
-      courses: store.getCourses()
-    }
+    const content = transfer.toJson(store.getCourses(), store.getSettings())
     wx.setClipboardData({
-      data: JSON.stringify(payload, null, 2),
+      data: content,
       success: () => wx.showToast({ title: '已复制到剪贴板', icon: 'success' })
     })
   },

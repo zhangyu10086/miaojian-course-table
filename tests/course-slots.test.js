@@ -86,3 +86,16 @@ test('planSave 编辑已分组课程并同步时整组重建', () => {
   assert.equal(plan.rebuildGroup, true)
   assert.equal(plan.firstId, '')
 })
+
+test('planSave 编辑已分组课程且取消同步时只更新当前记录', () => {
+  const plan = slotsUtil.planSave({
+    isEdit: true,
+    courseId: 'c1',
+    groupId: 'g1',
+    syncGroup: false,
+    slotCount: 1
+  })
+  assert.equal(plan.needsGroup, true)
+  assert.equal(plan.rebuildGroup, false)
+  assert.equal(plan.firstId, 'c1')
+})

@@ -155,6 +155,28 @@ test('getCourses 保留 groupId', () => {
   assert.equal(store.getCourses()[0].groupId, 'g1')
 })
 
+test('upsertCourses 同 id 再次写入是更新而不是新增', () => {
+  store.upsertCourses([
+    { id: 'c1', name: '高数', day: 1, startSection: 1, endSection: 2, weeks: [1] }
+  ])
+  store.upsertCourses([
+    { id: 'c1', name: '高数（改）', day: 1, startSection: 1, endSection: 2, weeks: [1] }
+  ])
+  const list = store.getCourses()
+  assert.equal(list.length, 1)
+  assert.equal(list[0].name, '高数（改）')
+})
+
+test('批量写入后每条记录的 id 非空且互不相同', () => {
+  store.upsertCourses([
+    { name: 'A', day: 1, startSection: 1, endSection: 2, weeks: [1] },
+    { name: 'B', day: 2, startSection: 1, endSection: 2, weeks: [1] }
+  ])
+  const ids = store.getCourses().map((item) => item.id)
+  assert.ok(ids.every((id) => !!id))
+  assert.equal(new Set(ids).size, 2)
+})
+
 test('deleteCourseGroup 只删除同组记录', () => {
   store.upsertCourses([
     { name: '高数', day: 1, startSection: 1, endSection: 2, weeks: [1], groupId: 'g1' },

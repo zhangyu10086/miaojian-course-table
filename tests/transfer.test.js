@@ -76,6 +76,27 @@ test('JSON 导入导出往返', () => {
   assert.equal(result.settings.totalWeeks, 17)
 })
 
+test('JSON 导出不包含内部字段 groupId，且能往返导入', () => {
+  const text = transfer.toJson(
+    [
+      {
+        id: 'c1',
+        name: '高数',
+        day: 1,
+        startSection: 1,
+        endSection: 2,
+        weeks: [1],
+        groupId: 'g1'
+      }
+    ],
+    null
+  )
+  assert.equal(text.indexOf('groupId'), -1)
+  const parsed = transfer.parseJson(text)
+  assert.equal(parsed.courses.length, 1)
+  assert.equal(parsed.courses[0].name, '高数')
+})
+
 test('ICS 导出包含自定义课表数据，可往返', () => {
   const ics = transfer.toIcs(courses, settings)
   assert.match(ics, /BEGIN:VCALENDAR/)
