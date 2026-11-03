@@ -141,7 +141,7 @@
         bindtap="onWeekToggle"
       >
         <text class="chip-week">{{item.week}}</text>
-        <text class="chip-date">{{item.label}}</text>
+        <text wx:if="{{item.label}}" class="chip-date">{{item.label}}</text>
       </view>
     </view>
   </view>

@@ -95,6 +95,39 @@ Page({
     })
   },
 
+  onShow() {
+    // 从设置页返回时需要重新计算周次日期，否则「去设置」回来仍是旧状态
+    this.refreshWeekMeta()
+  },
+
+  // 只刷新周次卡片相关字段，保留用户已选周次
+  refreshWeekMeta() {
+    const settings = store.getSettings()
+    const dateRange = dateUtil.semesterDateRange(settings)
+    const labels = dateUtil.weekDateLabels(settings, settings.totalWeeks)
+    const selected = new Set(
+      this.data.weekChips.filter((chip) => chip.selected).map((chip) => chip.week)
+    )
+    const weekChips = labels.map((item) => ({
+      week: item.week,
+      label: dateRange ? item.label : '',
+      selected: selected.has(item.week)
+    }))
+
+    const nowWeek = dateUtil.getWeekNumber(settings, new Date())
+    const currentWeekLabel =
+      dateRange && nowWeek.week && !nowWeek.before && !nowWeek.after
+        ? '本周是第 ' + nowWeek.week + ' 周 · ' + dateUtil.formatWeekRange(settings, nowWeek.week)
+        : ''
+
+    this.setData({
+      dateRange,
+      currentWeekLabel,
+      weekChips,
+      weekCount: weekChips.filter((chip) => chip.selected).length
+    })
+  },
+
   // 把课程记录转换成页面用的时段行（带下拉索引）
   toSlotRow(item, sections) {
     const list = sections || this.data.sections
