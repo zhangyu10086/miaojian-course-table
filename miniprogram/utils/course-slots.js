@@ -35,7 +35,7 @@ function slotsFromCourse(course) {
     return course.slots.map((slot) => ({
       day: Number(slot.day) || 1,
       startSection: Number(slot.startSection) || 1,
-      endSection: Number(slot.endSection) || 1
+      endSection: Number(slot.endSection) || Number(slot.startSection) || 1
     }))
   }
   return [

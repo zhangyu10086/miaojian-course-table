@@ -39,3 +39,11 @@ test('slotsFromCourse 兼容没有时段数组的旧数据', () => {
     [{ day: 2, startSection: 1, endSection: 2 }]
   )
 })
+
+test('slotsFromCourse 缺 endSection 时回退到 startSection', () => {
+  const slots = slotsUtil.slotsFromCourse({
+    slots: [{ day: 1, startSection: 3 }]
+  })
+  assert.equal(slots[0].startSection, 3)
+  assert.equal(slots[0].endSection, 3)
+})
