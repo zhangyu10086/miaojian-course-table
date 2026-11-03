@@ -1,6 +1,6 @@
 {
   "name": "course-table",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "private": true,
   "description": "微信小程序课程表（自用）",
   "scripts": {
