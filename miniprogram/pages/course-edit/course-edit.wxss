@@ -187,9 +187,16 @@
   color: var(--muted);
 }
 
-.slot-remove {
+/* 无论有没有「删除」，这一列都占同样的宽度，避免添加时段时三个选择器变窄 */
+.slot-remove-slot {
   flex: 0 0 84rpx;
   margin-left: 4rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slot-remove {
   padding: 16rpx 0;
   text-align: center;
   font-size: 22rpx;

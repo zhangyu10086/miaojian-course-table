@@ -74,12 +74,14 @@
         <view class="slot-picker">第 {{item.endSection}} 节</view>
       </picker>
 
-      <text
-        wx:if="{{slots.length > 1}}"
-        class="slot-remove"
-        data-index="{{index}}"
-        catchtap="onRemoveSlot"
-      >删除</text>
+      <view class="slot-remove-slot">
+        <text
+          wx:if="{{slots.length > 1}}"
+          class="slot-remove"
+          data-index="{{index}}"
+          catchtap="onRemoveSlot"
+        >删除</text>
+      </view>
     </view>
 
     <view class="slot-add" bindtap="onAddSlot">+ 添加时间段</view>
