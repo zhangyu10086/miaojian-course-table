@@ -165,23 +165,32 @@
 }
 
 .slot-picker {
-  padding: 16rpx 14rpx;
+  padding: 16rpx 8rpx;
   background: var(--soft);
   border-radius: 12rpx;
   font-size: 25rpx;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .slot-row > picker {
+  flex: 1;
+  min-width: 0;
   margin-right: 10rpx;
 }
 
 .slot-dash {
+  flex-shrink: 0;
   margin-right: 10rpx;
   color: var(--muted);
 }
 
 .slot-remove {
-  margin-left: auto;
+  flex-shrink: 0;
+  margin-left: 4rpx;
+  padding: 16rpx 6rpx;
   font-size: 22rpx;
   color: var(--danger);
 }
