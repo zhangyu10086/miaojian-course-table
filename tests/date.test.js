@@ -83,3 +83,31 @@ test('formatCountdown 输出可读倒计时', () => {
   assert.equal(dateUtil.formatCountdown(25), '还有 25 分钟')
   assert.equal(dateUtil.formatCountdown(90), '还有 1 小时 30 分钟')
 })
+
+test('weekStartLabel 返回该周周一的月日', () => {
+  assert.equal(dateUtil.weekStartLabel(settings, 1), '09/07')
+  assert.equal(dateUtil.weekStartLabel(settings, 10), '11/09')
+})
+
+test('weekDateLabels 覆盖全部周次', () => {
+  const labels = dateUtil.weekDateLabels(settings, 3)
+  assert.deepEqual(
+    labels.map((item) => item.week),
+    [1, 2, 3]
+  )
+  assert.equal(labels[2].label, '09/21')
+})
+
+test('semesterDateRange 返回第 1 周周一到最后一周周日', () => {
+  assert.deepEqual(dateUtil.semesterDateRange(settings), {
+    start: '2026-09-07',
+    end: '2027-01-24'
+  })
+})
+
+test('没有开学日期时 semesterDateRange 返回 null', () => {
+  assert.equal(
+    dateUtil.semesterDateRange({ semesterStartDate: '', totalWeeks: 20 }),
+    null
+  )
+})

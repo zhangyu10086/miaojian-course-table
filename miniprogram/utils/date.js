@@ -121,6 +121,34 @@ function formatWeekRange(settings, weekNumber) {
   return formatShortDate(days[0].date) + ' — ' + formatShortDate(days[days.length - 1].date)
 }
 
+function weekStartDate(settings, weekNumber) {
+  return getWeekDates(settings, weekNumber)[0]
+}
+
+// 周次日期用斜杠分隔，例如 09/07（区别于 formatShortDate 的横杠格式）
+function weekStartLabel(settings, weekNumber) {
+  const date = weekStartDate(settings, weekNumber)
+  return pad2(date.getMonth() + 1) + '/' + pad2(date.getDate())
+}
+
+// 每个周次格子第二行显示的日期，例如 [{ week: 1, label: '09/07' }]
+function weekDateLabels(settings, totalWeeks) {
+  const count = Math.max(1, Number(totalWeeks) || 20)
+  return Array.from({ length: count }, (_, index) => ({
+    week: index + 1,
+    label: weekStartLabel(settings, index + 1)
+  }))
+}
+
+// 日期选择器的可选范围；没有开学日期时返回 null，调用方据此禁用选择器
+function semesterDateRange(settings) {
+  if (!parseDate(settings.semesterStartDate)) return null
+  const totalWeeks = Math.max(1, Number(settings.totalWeeks) || 20)
+  const start = weekStartDate(settings, 1)
+  const end = addDays(start, totalWeeks * 7 - 1)
+  return { start: formatDate(start), end: formatDate(end) }
+}
+
 function timeToMinutes(time) {
   const match = String(time || '').match(/^(\d{1,2}):(\d{2})$/)
   if (!match) return 0
@@ -187,6 +215,10 @@ module.exports = {
   daysBetween,
   getWeekNumber,
   getWeekDates,
+  weekStartDate,
+  weekStartLabel,
+  weekDateLabels,
+  semesterDateRange,
   getDisplayDays,
   todayDayNumber,
   formatWeekRange,
