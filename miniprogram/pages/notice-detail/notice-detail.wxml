@@ -1,4 +1,9 @@
 <view class="page detail-page">
+  <view wx:if="{{banner}}" class="detail-banner {{banner.type}}">
+    <text class="banner-text">{{banner.text}}</text>
+    <text wx:if="{{banner.type === 'deleted'}}" class="banner-action" bindtap="onBack">返回</text>
+  </view>
+
   <view wx:if="{{loading}}" class="state">
     <view class="state-desc">正在加载…</view>
   </view>

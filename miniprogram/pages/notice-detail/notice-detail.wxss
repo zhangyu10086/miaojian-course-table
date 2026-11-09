@@ -214,3 +214,34 @@
   color: var(--muted);
   margin-top: 34rpx;
 }
+
+.detail-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 22rpx;
+  margin-bottom: 16rpx;
+  border-radius: 14rpx;
+  font-size: 22rpx;
+}
+
+.detail-banner.updated {
+  background: #e8f2ea;
+  color: #2f6b45;
+}
+
+.detail-banner.deleted {
+  background: #fbeceb;
+  color: #b94a3f;
+}
+
+.banner-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.banner-action {
+  flex-shrink: 0;
+  margin-left: 14rpx;
+  text-decoration: underline;
+}

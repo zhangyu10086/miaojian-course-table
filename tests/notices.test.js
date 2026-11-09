@@ -144,3 +144,64 @@ test('新增公告会重新出现未读', () => {
   assert.equal(notices.unreadCount(next), 1)
   assert.equal(notices.withUnread(next).find((item) => item.id === 'b').unread, true)
 })
+
+function seedCache(list) {
+  wx.setStorageSync('ct_notices_cache_v1', list)
+  wx.setStorageSync('ct_notices_cache_at_v1', 12345)
+}
+
+test('getCachedNotice 从列表缓存取单条并标准化', () => {
+  seedCache([
+    {
+      id: 'n1',
+      title: '标题',
+      content: '正文',
+      publishedAt: new Date(2026, 9, 22, 10, 0).getTime()
+    }
+  ])
+  const notice = notices.getCachedNotice('n1')
+  assert.equal(notice.title, '标题')
+  assert.equal(notice.content, '正文')
+  assert.equal(notice.dateLabel, '2026-10-22')
+  assert.equal(notices.getCachedNotice('missing'), null)
+  assert.equal(notices.getCachedNotice(''), null)
+})
+
+test('sameNotice 忽略换行符和尾部空白', () => {
+  const a = { title: '标题', content: '第一行\r\n第二行  ' }
+  const b = { title: '标题 ', content: '第一行\n第二行' }
+  assert.equal(notices.sameNotice(a, b), true)
+  assert.equal(
+    notices.sameNotice(a, { title: '标题', content: '第一行\n第三行' }),
+    false
+  )
+})
+
+test('patchCachedNotice 更新内容但不改缓存时间戳', () => {
+  seedCache([
+    { id: 'n1', title: '旧标题', content: '旧正文', publishedAt: 1, views: 3 }
+  ])
+  notices.patchCachedNotice('n1', {
+    title: '新标题',
+    content: '新正文',
+    qqGroup: '',
+    views: 9,
+    updatedAt: 2000
+  })
+  const list = wx.getStorageSync('ct_notices_cache_v1')
+  assert.equal(list[0].title, '新标题')
+  assert.equal(list[0].content, '新正文')
+  assert.equal(list[0].views, 9)
+  assert.equal(wx.getStorageSync('ct_notices_cache_at_v1'), 12345)
+})
+
+test('removeCachedNotice 把删除的公告移出缓存', () => {
+  seedCache([
+    { id: 'n1', title: 'A', content: 'a', publishedAt: 1 },
+    { id: 'n2', title: 'B', content: 'b', publishedAt: 2 }
+  ])
+  notices.removeCachedNotice('n1')
+  const list = wx.getStorageSync('ct_notices_cache_v1')
+  assert.equal(list.length, 1)
+  assert.equal(list[0].id, 'n2')
+})

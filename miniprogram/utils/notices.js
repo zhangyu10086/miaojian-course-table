@@ -193,6 +193,77 @@ function getCachedNotices() {
   return sortNotices(getCache())
 }
 
+// 从列表缓存里取一条公告，详情页先用它立即渲染。
+function getCachedNotice(id) {
+  const target = String(id || '')
+  if (!target) return null
+  const found = getCache().find(
+    (item) => String(item.id || item._id || '') === target
+  )
+  return found ? normalize(found) : null
+}
+
+// 只比较真正影响阅读的内容，忽略换行符差异和首尾空白。
+function normalizeText(text) {
+  return String(text || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/\s+$/, '')
+    .trim()
+}
+
+function sameNotice(a, b) {
+  if (!a || !b) return false
+  return (
+    normalizeText(a.title) === normalizeText(b.title) &&
+    normalizeText(a.content) === normalizeText(b.content)
+  )
+}
+
+// 把最新的单条公告写回列表缓存，但不动缓存时间戳：
+// 时间戳代表整批列表的拉取时间，改一条不等于整批都是新的。
+function patchCachedNotice(id, notice) {
+  const target = String(id || '')
+  if (!target || !notice) return
+  const list = getCache()
+  let changed = false
+  const next = list.map((item) => {
+    if (String(item.id || item._id || '') !== target) return item
+    changed = true
+    return normalize(
+      Object.assign({}, item, {
+        title: notice.title,
+        content: notice.content,
+        qqGroup: notice.qqGroup,
+        views: notice.views,
+        updatedAt: notice.updatedAt,
+        publishedAt: notice.publishedAt || item.publishedAt
+      })
+    )
+  })
+  if (!changed) return
+  try {
+    wx.setStorageSync(CACHE_KEY, next)
+  } catch (err) {
+    console.warn('更新公告缓存失败', err)
+  }
+}
+
+// 公告被删除时从缓存里移除，避免列表上还留一条点进去报错的记录。
+function removeCachedNotice(id) {
+  const target = String(id || '')
+  if (!target) return
+  const list = getCache()
+  const next = list.filter(
+    (item) => String(item.id || item._id || '') !== target
+  )
+  if (next.length === list.length) return
+  try {
+    wx.setStorageSync(CACHE_KEY, next)
+  } catch (err) {
+    console.warn('移除公告缓存失败', err)
+  }
+}
+
 module.exports = {
   formatDate,
   formatDateTime,
@@ -204,5 +275,9 @@ module.exports = {
   markAllRead,
   fetchNotices,
   fetchDetail,
-  getCachedNotices
+  getCachedNotices,
+  getCachedNotice,
+  sameNotice,
+  patchCachedNotice,
+  removeCachedNotice
 }
