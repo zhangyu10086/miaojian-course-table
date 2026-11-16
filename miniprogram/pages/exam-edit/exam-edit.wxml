@@ -18,13 +18,13 @@
       />
     </view>
 
-    <view class="form-row">
-      <text class="form-label">考试名称</text>
+    <view wx:if="{{showTitle}}" class="form-row">
+      <text class="form-label">考试批次</text>
       <input
         class="form-input"
         value="{{title}}"
         data-field="title"
-        placeholder="选填，如 期末（分散）"
+        placeholder="如 第12周-期末（分散）"
         placeholder-class="placeholder"
         maxlength="40"
         bindinput="onInput"

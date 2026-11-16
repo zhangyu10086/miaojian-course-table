@@ -20,7 +20,8 @@ Page({
     mode: '',
     remark: '',
     sourceHint: '',
-    dateHint: ''
+    dateHint: '',
+    showTitle: false
   },
 
   onLoad(options) {
@@ -60,9 +61,11 @@ Page({
       remark: exam.remark,
       sourceHint:
         exam.source === 'sync'
-          ? '来自教务导入，保存后转为手动课程，重新导入不会覆盖'
+          ? '来自教务导入，保存后转为手动考试，重新导入不会覆盖'
           : '手动添加的考试，重新导入不会覆盖',
-      dateHint: this.describeDate(exam.date || todayString())
+      dateHint: this.describeDate(exam.date || todayString()),
+      // 考试名称来自教务，手动添加时不展示，避免和科目混淆
+      showTitle: !!exam.title
     })
   },
 
