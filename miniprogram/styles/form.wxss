@@ -27,9 +27,16 @@
   line-height: 1.5;
 }
 
+/* picker 默认按内容宽度撑开，这里统一成整行，避免不同行宽度不一致 */
+.form-card > picker {
+  display: block;
+  width: 100%;
+}
+
 .form-row {
   display: flex;
   align-items: center;
+  width: 100%;
   min-height: 96rpx;
   border-bottom: 1rpx solid var(--line);
 }
