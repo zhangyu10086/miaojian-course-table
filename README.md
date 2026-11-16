@@ -53,13 +53,16 @@
     <td align="center"><img src="docs/screenshots/today.jpg" width="240" alt="今日"><br><sub>今日 / 下一节课</sub></td>
   </tr>
   <tr>
+    <td align="center"><img src="docs/screenshots/exams.png" width="240" alt="考试安排"><br><sub>考试安排</sub></td>
+    <td align="center"><img src="docs/screenshots/exam-edit.png" width="240" alt="添加考试"><br><sub>添加考试</sub></td>
+  </tr>
+  <tr>
     <td align="center"><img src="docs/screenshots/sync.jpg" width="240" alt="教务导入"><br><sub>教务导入</sub></td>
     <td align="center"><img src="docs/screenshots/mine.jpg" width="240" alt="我的"><br><sub>我的</sub></td>
   </tr>
 </table>
 
-> 截图使用 `docs/demo-schedule.json` 里的虚构课表，不含真实个人信息。
-> 想本地预览同样效果：我的 → 导入课表 → 选择这个 JSON。
+> 截图不含真实个人信息。课表部分可本地预览：我的 → 导入课表 → 选择 `docs/demo-schedule.json`。
 
 ## 功能
 
