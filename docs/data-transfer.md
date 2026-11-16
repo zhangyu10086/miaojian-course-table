@@ -51,9 +51,27 @@
       "credit": 4,
       "source": "manual"
     }
+  ],
+  "exams": [
+    {
+      "id": "e1",
+      "name": "软件测试",
+      "title": "第12周-期末（分散）",
+      "date": "2026-11-18",
+      "startTime": "14:00",
+      "endTime": "15:30",
+      "location": "E03-A102",
+      "campus": "北校区",
+      "mode": "考查",
+      "credit": 2,
+      "teacher": "谢玉峰",
+      "source": "sync"
+    }
   ]
 }
 ```
+
+`exams` 是后加的字段：没有考试时不会出现；旧版本导入时忽略它，不影响课程恢复。
 
 ## CSV 格式
 
