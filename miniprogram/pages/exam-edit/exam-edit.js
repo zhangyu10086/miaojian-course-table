@@ -19,13 +19,19 @@ Page({
     campus: '',
     mode: '',
     remark: '',
-    sourceLabel: ''
+    sourceHint: '',
+    dateHint: ''
   },
 
   onLoad(options) {
     const id = options && options.id ? decodeURIComponent(options.id) : ''
     if (!id) {
-      this.setData({ date: todayString() })
+      const date = todayString()
+      this.setData({
+        date,
+        sourceHint: '填写后保存在本机，只有你自己能看到',
+        dateHint: this.describeDate(date)
+      })
       wx.setNavigationBarTitle({ title: '添加考试' })
       return
     }
@@ -52,7 +58,11 @@ Page({
       campus: exam.campus,
       mode: exam.mode,
       remark: exam.remark,
-      sourceLabel: exam.source === 'sync' ? '来自教务导入' : '手动添加'
+      sourceHint:
+        exam.source === 'sync'
+          ? '来自教务导入，保存后转为手动课程，重新导入不会覆盖'
+          : '手动添加的考试，重新导入不会覆盖',
+      dateHint: this.describeDate(exam.date || todayString())
     })
   },
 
@@ -62,8 +72,19 @@ Page({
     this.setData({ [field]: event.detail.value })
   },
 
+  // 日期下方的提示，例如「还有 3 天」「就是今天」
+  describeDate(date) {
+    if (!date) return '选好日期后，先显示在考试安排里'
+    const days = examsUtil.daysUntil({ date }, Date.now())
+    if (days === null) return ''
+    if (days === 0) return '就是今天'
+    if (days > 0) return '还有 ' + days + ' 天'
+    return '已经过去 ' + Math.abs(days) + ' 天'
+  },
+
   onDateChange(event) {
-    this.setData({ date: event.detail.value })
+    const date = event.detail.value
+    this.setData({ date, dateHint: this.describeDate(date) })
   },
 
   onStartTimeChange(event) {

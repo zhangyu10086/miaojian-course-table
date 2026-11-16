@@ -1,0 +1,75 @@
+/* 表单通用样式：课程编辑、考试编辑等页面共用 */
+
+.edit-page {
+  padding: 24rpx 24rpx 60rpx;
+}
+
+.form-card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 4rpx 26rpx 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.form-title-block {
+  padding: 26rpx 0 10rpx;
+}
+
+.form-title {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.form-hint {
+  font-size: 21rpx;
+  color: var(--muted);
+  margin-top: 4rpx;
+  line-height: 1.5;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  min-height: 96rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.form-card > .form-row:last-child,
+.form-card > picker:last-child .form-row,
+.form-card > .remark-row:last-child {
+  border-bottom: none;
+}
+
+.form-label {
+  width: 170rpx;
+  flex-shrink: 0;
+  font-size: 27rpx;
+  color: var(--muted);
+}
+
+.form-input {
+  flex: 1;
+  min-width: 0;
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: 28rpx;
+  text-align: right;
+  padding: 0;
+}
+
+.form-value {
+  flex: 1;
+  text-align: right;
+  font-size: 27rpx;
+  padding-right: 8rpx;
+}
+
+.chevron {
+  font-size: 34rpx;
+  color: #c3c3bc;
+  line-height: 1;
+}
+
+.placeholder {
+  color: #b9b9b2;
+}
