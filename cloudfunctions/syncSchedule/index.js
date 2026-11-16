@@ -473,6 +473,67 @@ async function login(
   }
 }
 
+// 考试查询：登录态下拿本学期考试安排。
+// 失败返回空数组，不影响课表导入。
+async function fetchExams(client, base, xnm, xqm) {
+  const url = base + '/kwgl/kscx_cxXsksxxIndex.html?doType=query&gnmkdm=N358105'
+  const referer = base + '/kwgl/kscx_cxXsksxxIndex.html?gnmkdm=N358105&layout=default'
+  const body = new URLSearchParams({
+    xnm,
+    xqm,
+    ksmc: '',
+    kc_mc: '',
+    ksrq: '',
+    _search: 'false',
+    nd: String(Date.now()),
+    'queryModel.showCount': '100',
+    'queryModel.currentPage': '1',
+    'queryModel.sortName': '',
+    'queryModel.sortOrder': 'asc',
+    time: '1'
+  }).toString()
+
+  const response = await client.post(url, body, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      'X-Requested-With': 'XMLHttpRequest',
+      Referer: referer,
+      Accept: 'application/json, text/javascript, */*; q=0.01'
+    }
+  })
+
+  let data = response.data
+  if (typeof data === 'string') {
+    if (looksLikeLoginPage(data)) {
+      throw createError('LOGIN_FAILED', '登录态已失效，请重试')
+    }
+    try {
+      data = JSON.parse(data)
+    } catch (err) {
+      return []
+    }
+  }
+  if (!data || typeof data !== 'object') return []
+
+  const items = Array.isArray(data.items)
+    ? data.items
+    : Array.isArray(data.rows)
+    ? data.rows
+    : []
+
+  // 只返回展示需要的字段，避免把学号、姓名等个人信息带到客户端。
+  return items.map((item) => ({
+    kcmc: String(item.kcmc || ''),
+    ksmc: String(item.ksmc || ''),
+    kssj: String(item.kssj || ''),
+    cdmc: String(item.cdmc || ''),
+    cdxqmc: String(item.cdxqmc || ''),
+    khfs: String(item.khfs || ''),
+    xf: item.xf || '',
+    jsxx: String(item.jsxx || '')
+  }))
+}
+
 async function fetchKbList(client, base, xnm, xqm) {
   const referer =
     base + '/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default'
@@ -596,12 +657,59 @@ async function handlePrepare(event) {
   }
 }
 
+// 只拉考试安排：复用同一套登录方式，不返回课表。
+async function handleExams(event) {
+  const input = validate(event)
+  const base = normalizeBaseUrl(input.baseUrl)
+  const hostname = new URL(base).hostname
+
+  if (!(await isHostAllowed(hostname))) {
+    return fail('HOST_NOT_ALLOWED', '域名 ' + hostname + ' 不在允许的学校列表中')
+  }
+  if (
+    process.env.REQUIRE_CLIENT_ENCRYPT === 'true' &&
+    !input.encryptedPassword
+  ) {
+    return fail(
+      'CLIENT_ENCRYPTION_REQUIRED',
+      '请更新到最新版本小程序后再导入'
+    )
+  }
+
+  const session = input.token ? decodeSessionToken(input.token) : null
+  if (input.token && (!session || session.baseUrl !== base)) {
+    return fail('SESSION_EXPIRED', '登录会话已过期，请重新导入')
+  }
+  if (session) {
+    const openid = currentOpenid()
+    if (session.openid && openid && session.openid !== openid) {
+      return fail('SESSION_EXPIRED', '登录会话已失效，请重新导入')
+    }
+  }
+
+  const jar = new CookieJar()
+  if (session) await restoreCookies(jar, session)
+  const client = createClient(jar)
+
+  await login(
+    client,
+    jar,
+    base,
+    input.username,
+    input.password,
+    input.encryptedPassword,
+    session
+  )
+  const exams = await fetchExams(client, base, input.xnm, input.xqm)
+  return { ok: true, exams }
+}
+
 exports.main = async (event) => {
   try {
     // 只记录流程标记，不记录账号、密码或密文，方便排查客户端版本和会话问题。
     console.log(
       '[syncSchedule]',
-      event && event.action === 'prepare' ? 'prepare' : 'login',
+      event && event.action ? event.action : 'login',
       'token=' + (event && event.token ? 'yes' : 'no'),
       'cipher=' + (event && event.encryptedPassword ? 'yes' : 'no'),
       'plain=' + (event && event.password ? 'yes' : 'no')
@@ -609,6 +717,10 @@ exports.main = async (event) => {
 
     if (event && event.action === 'prepare') {
       return await handlePrepare(event)
+    }
+
+    if (event && event.action === 'exams') {
+      return await handleExams(event)
     }
 
     const input = validate(event)
@@ -660,11 +772,20 @@ exports.main = async (event) => {
       return fail('NO_COURSES', '该学期没有查询到课程')
     }
 
+    // 考试安排顺带拉取，失败不影响课表导入。
+    let exams = []
+    try {
+      exams = await fetchExams(client, base, input.xnm, input.xqm)
+    } catch (err) {
+      console.warn('拉取考试安排失败', err && err.code, err && err.message)
+    }
+
     await markSchoolVerified(hostname)
 
     return {
       ok: true,
       kbList,
+      exams,
       meta: {
         host: hostname,
         xnm: input.xnm,

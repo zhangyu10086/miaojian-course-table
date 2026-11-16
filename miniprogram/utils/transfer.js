@@ -133,17 +133,20 @@ function normalizeCourses(list) {
     .filter(Boolean)
 }
 
-function buildPayload(courses, settings) {
-  return {
+function buildPayload(courses, settings, exams) {
+  const payload = {
     version: 1,
     exportedAt: Date.now(),
     settings: settings || null,
     courses: normalizeCourses(courses)
   }
+  // 考试是后加的字段：有才写入，旧版本读到会忽略。
+  if (Array.isArray(exams) && exams.length) payload.exams = exams
+  return payload
 }
 
-function toJson(courses, settings) {
-  return JSON.stringify(buildPayload(courses, settings), null, 2)
+function toJson(courses, settings, exams) {
+  return JSON.stringify(buildPayload(courses, settings, exams), null, 2)
 }
 
 function parseJson(text) {
@@ -158,7 +161,11 @@ function parseJson(text) {
   }
   const courses = normalizeCourses(data.courses)
   if (!courses.length) throw new Error('JSON 里没有可识别的课程')
-  return { courses, settings: data.settings || null }
+  return {
+    courses,
+    settings: data.settings || null,
+    exams: Array.isArray(data.exams) ? data.exams : []
+  }
 }
 
 function csvCell(value) {

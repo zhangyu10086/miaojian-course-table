@@ -1,4 +1,5 @@
 const store = require('../../utils/store')
+const examsUtil = require('../../utils/exams')
 const parser = require('../../utils/parser')
 const cloud = require('../../utils/cloud')
 const registry = require('../../utils/school-registry')
@@ -291,16 +292,24 @@ Page({
         return
       }
 
+      const exams = Array.isArray(result.exams) ? result.exams : []
+      const examText = exams.length ? '，以及 ' + exams.length + ' 场考试' : ''
+
       wx.showModal({
         title: '导入完成',
         content:
           '解析到 ' +
           courses.length +
-          ' 门课程。确认后将替换上次从教务导入的课程，手动添加的课程会保留。',
+          ' 门课程' +
+          examText +
+          '。确认后将替换上次从教务导入的课程，手动添加的课程会保留。',
         confirmText: '写入课表',
         success: (res) => {
           if (!res.confirm) return
           store.replaceSyncedCourses(courses)
+          if (Array.isArray(result.exams)) {
+            examsUtil.replaceSyncedExams(result.exams)
+          }
           wx.showToast({ title: '已导入 ' + courses.length + ' 门', icon: 'success' })
           setTimeout(() => wx.navigateBack(), 500)
         }

@@ -1,0 +1,133 @@
+.exams-page {
+  padding: 24rpx 24rpx 60rpx;
+}
+
+.exam-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6rpx 20rpx;
+}
+
+.head-title {
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.head-sub {
+  font-size: 22rpx;
+  color: var(--muted);
+  margin-top: 6rpx;
+}
+
+.head-action {
+  padding: 12rpx 24rpx;
+  border-radius: 999rpx;
+  background: var(--card);
+  font-size: 24rpx;
+  color: var(--text);
+}
+
+.head-action.loading {
+  color: var(--muted);
+}
+
+.exam-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.exam-card {
+  background: var(--card);
+  border-radius: 20rpx;
+  padding: 24rpx 26rpx;
+  margin-bottom: 16rpx;
+}
+
+.exam-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.exam-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.exam-days {
+  flex-shrink: 0;
+  margin-left: 14rpx;
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.exam-days.urgent {
+  color: #b94a3f;
+  font-weight: 600;
+}
+
+.exam-days.done {
+  color: var(--muted);
+}
+
+.exam-line {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: var(--text);
+}
+
+.exam-place {
+  color: var(--muted);
+}
+
+.exam-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12rpx;
+}
+
+.exam-tag {
+  margin-right: 10rpx;
+  margin-bottom: 6rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  background: var(--soft);
+  font-size: 20rpx;
+  color: var(--text);
+}
+
+.exam-tag.ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1rpx solid var(--line);
+}
+
+.past-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 8rpx;
+  font-size: 23rpx;
+  color: var(--muted);
+}
+
+.past-toggle {
+  text-decoration: underline;
+}
+
+.past-card {
+  opacity: 0.65;
+}
+
+.add-exam {
+  margin-top: 24rpx;
+  padding: 22rpx 0;
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--text);
+  background: var(--card);
+  border-radius: 20rpx;
+}

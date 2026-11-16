@@ -179,6 +179,38 @@ function createSchoolServer() {
       return
     }
 
+    if (
+      req.method === 'POST' &&
+      url.pathname === '/jwglxt/kwgl/kscx_cxXsksxxIndex.html'
+    ) {
+      const session = sessionOf(req)
+      if (!session || !session.loggedIn) {
+        res.statusCode = 302
+        res.setHeader('Location', '/jwglxt/xtgl/login_slogin.html')
+        res.end()
+        return
+      }
+      res.setHeader('Content-Type', 'application/json;charset=utf-8')
+      res.end(
+        JSON.stringify({
+          items: [
+            {
+              kcmc: '高等数学',
+              ksmc: '期末（分散）',
+              kssj: '2026-11-18(14:00-15:30)',
+              cdmc: 'A101',
+              cdxqmc: '北校区',
+              khfs: '考试',
+              xf: '2.0',
+              jsxx: '2023074/张老师',
+              xh_id: 'should-not-leak'
+            }
+          ]
+        })
+      )
+      return
+    }
+
     res.statusCode = 404
     res.end('not found')
   })
@@ -279,4 +311,54 @@ test('token 过期或地址不一致时返回 SESSION_EXPIRED', async (t) => {
 
   assert.equal(result.ok, false)
   assert.equal(result.code, 'SESSION_EXPIRED')
+})
+
+test('导入课表时顺带返回考试安排，且不携带个人信息', async (t) => {
+  const { baseUrl } = await startServer(t)
+  const prepared = await sync.main({ action: 'prepare', baseUrl })
+  const encryptedPassword = rsa.encryptWithRandom(
+    'secret123',
+    prepared.modulus,
+    prepared.exponent,
+    deterministicRandom
+  )
+
+  const result = await sync.main({
+    token: prepared.token,
+    baseUrl,
+    username: 'student',
+    encryptedPassword,
+    xnm: '2026',
+    xqm: '3'
+  })
+
+  assert.equal(result.ok, true)
+  assert.equal(result.exams.length, 1)
+  assert.equal(result.exams[0].kcmc, '高等数学')
+  assert.equal(result.exams[0].xh_id, undefined)
+})
+
+test('action=exams 只返回考试，不返回课表', async (t) => {
+  const { baseUrl } = await startServer(t)
+  const prepared = await sync.main({ action: 'prepare', baseUrl })
+  const encryptedPassword = rsa.encryptWithRandom(
+    'secret123',
+    prepared.modulus,
+    prepared.exponent,
+    deterministicRandom
+  )
+
+  const result = await sync.main({
+    action: 'exams',
+    token: prepared.token,
+    baseUrl,
+    username: 'student',
+    encryptedPassword,
+    xnm: '2026',
+    xqm: '3'
+  })
+
+  assert.equal(result.ok, true)
+  assert.equal(result.kbList, undefined)
+  assert.equal(result.exams.length, 1)
 })

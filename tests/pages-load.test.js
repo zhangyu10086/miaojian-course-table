@@ -36,6 +36,8 @@ test('所有页面模块可以正常加载', () => {
     '../miniprogram/pages/course-edit/course-edit.js',
     '../miniprogram/pages/sync/sync.js',
     '../miniprogram/pages/settings/settings.js',
+    '../miniprogram/pages/exams/exams.js',
+    '../miniprogram/pages/exam-edit/exam-edit.js',
     '../miniprogram/pages/admin/admin.js',
     '../miniprogram/pages/school-admin/school-admin.js'
   ]

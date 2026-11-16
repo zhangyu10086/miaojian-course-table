@@ -1,6 +1,7 @@
 const store = require('../../utils/store')
 const dateUtil = require('../../utils/date')
 const layout = require('../../utils/layout')
+const examsUtil = require('../../utils/exams')
 
 Page({
   data: {
@@ -95,6 +96,22 @@ Page({
       }
     }
 
+    const upcomingExam = examsUtil.nextExam(
+      examsUtil.getExams(),
+      now.getTime(),
+      7
+    )
+    const examDays = upcomingExam
+      ? examsUtil.daysUntil(upcomingExam, now.getTime())
+      : null
+    const nextExam = upcomingExam
+      ? Object.assign({}, upcomingExam, {
+          dateLabel: examsUtil.formatExamDate(upcomingExam),
+          timeLabel: examsUtil.formatTimeRange(upcomingExam),
+          daysLabel: examDays === 0 ? '今天考试' : '还有 ' + examDays + ' 天'
+        })
+      : null
+
     const weekday = todayDay
     this.setData({
       dateLabel: now.getMonth() + 1 + '月' + now.getDate() + '日',
@@ -110,8 +127,13 @@ Page({
             timeLabel: next.startTime + ' - ' + next.endTime
           })
         : null,
-      nextCountdown
+      nextCountdown,
+      nextExam
     })
+  },
+
+  onExamTap() {
+    wx.navigateTo({ url: '/pages/exams/exams' })
   },
 
   onCourseTap(event) {

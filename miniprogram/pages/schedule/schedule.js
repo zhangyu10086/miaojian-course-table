@@ -162,6 +162,10 @@ Page({
     })
   },
 
+  onExamTap() {
+    wx.navigateTo({ url: '/pages/exams/exams' })
+  },
+
   onNoticeTap() {
     this.stopNoticeTimer()
     this.setData({ noticeVisible: true })

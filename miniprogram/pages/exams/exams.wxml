@@ -1,0 +1,77 @@
+<view class="page exams-page">
+  <view class="exam-head">
+    <view class="head-main">
+      <view class="head-title">考试安排</view>
+      <view class="head-sub">{{upcoming.length}} 场待考</view>
+    </view>
+    <view class="head-action {{refreshing ? 'loading' : ''}}" bindtap="onRefresh">
+      {{refreshing ? '刷新中…' : '刷新'}}
+    </view>
+  </view>
+
+  <view wx:if="{{!upcoming.length && !past.length}}" class="empty-card">
+    <view class="empty-title">还没有考试安排</view>
+    <view class="empty-desc">可以在「从教务系统导入」时一起获取，也可以自己添加。</view>
+    <view class="empty-actions">
+      <view class="ghost-btn" bindtap="onAdd">手动添加</view>
+    </view>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{upcoming.length}}" class="exam-list">
+      <view
+        wx:for="{{upcoming}}"
+        wx:key="id"
+        class="exam-card"
+        data-id="{{item.id}}"
+        bindtap="onEdit"
+      >
+        <view class="exam-top">
+          <text class="exam-name">{{item.name}}</text>
+          <text wx:if="{{item.daysLabel}}" class="exam-days {{item.urgent ? 'urgent' : ''}}">{{item.daysLabel}}</text>
+        </view>
+        <view class="exam-line">{{item.dateLabel}} · {{item.timeLabel}}</view>
+        <view class="exam-line exam-place">
+          <text>{{item.location || '考场待定'}}</text>
+          <text wx:if="{{item.campus}}"> · {{item.campus}}</text>
+        </view>
+        <view class="exam-tags">
+          <text wx:if="{{item.mode}}" class="exam-tag">{{item.mode}}</text>
+          <text wx:if="{{item.title}}" class="exam-tag ghost">{{item.title}}</text>
+          <text wx:if="{{item.credit}}" class="exam-tag ghost">{{item.credit}} 学分</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty-card">
+      <view class="empty-title">没有待考的考试</view>
+      <view class="empty-desc">已结束的考试收在下面。</view>
+    </view>
+
+    <view wx:if="{{past.length}}" class="past-head" bindtap="onTogglePast">
+      <text>已结束 {{past.length}} 场</text>
+      <text class="past-toggle">{{showPast ? '收起' : '展开'}}</text>
+    </view>
+
+    <view wx:if="{{showPast}}" class="exam-list past">
+      <view
+        wx:for="{{past}}"
+        wx:key="id"
+        class="exam-card past-card"
+        data-id="{{item.id}}"
+        bindtap="onEdit"
+      >
+        <view class="exam-top">
+          <text class="exam-name">{{item.name}}</text>
+          <text class="exam-days done">已结束</text>
+        </view>
+        <view class="exam-line">{{item.dateLabel}} · {{item.timeLabel}}</view>
+        <view class="exam-line exam-place">
+          <text>{{item.location || '考场待定'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="add-exam" bindtap="onAdd">+ 添加考试</view>
+  </block>
+</view>

@@ -1,4 +1,5 @@
 const store = require('../../utils/store')
+const examsUtil = require('../../utils/exams')
 const dateUtil = require('../../utils/date')
 const cloud = require('../../utils/cloud')
 const transfer = require('../../utils/transfer')
@@ -89,7 +90,11 @@ Page({
   },
 
   exportJsonFile() {
-    const content = transfer.toJson(store.getCourses(), store.getSettings())
+    const content = transfer.toJson(
+      store.getCourses(),
+      store.getSettings(),
+      examsUtil.getExams()
+    )
     transferFile
       .shareText(content, 'json', this.exportBaseName())
       .catch((err) => this.handleTransferError(err))
@@ -121,7 +126,11 @@ Page({
   },
 
   copyJson() {
-    const content = transfer.toJson(store.getCourses(), store.getSettings())
+    const content = transfer.toJson(
+      store.getCourses(),
+      store.getSettings(),
+      examsUtil.getExams()
+    )
     wx.setClipboardData({
       data: content,
       success: () => wx.showToast({ title: '已复制到剪贴板', icon: 'success' })
@@ -199,6 +208,7 @@ Page({
     }
 
     const hasSettings = !!result.settings
+    const examCount = Array.isArray(result.exams) ? result.exams.length : 0
     wx.showModal({
       title: '导入课表',
       content:
@@ -206,13 +216,16 @@ Page({
         sourceLabel +
         '导入 ' +
         courses.length +
-        ' 门课程，替换当前课表' +
+        ' 门课程' +
+        (examCount ? '、' + examCount + ' 场考试' : '') +
+        '，替换当前课表' +
         (hasSettings ? '，并覆盖学期设置' : '') +
         '。',
       confirmText: '导入',
       success: (modal) => {
         if (!modal.confirm) return
         store.saveCourses(courses)
+        if (examCount) examsUtil.saveExams(result.exams)
         if (hasSettings) store.saveSettings(result.settings)
         this.load()
         wx.showToast({ title: '已导入 ' + courses.length + ' 门', icon: 'success' })

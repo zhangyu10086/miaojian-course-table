@@ -29,6 +29,15 @@
     今天的课已经结束，好好休息。
   </view>
 
+  <view wx:if="{{nextExam}}" class="exam-card" bindtap="onExamTap">
+    <view class="exam-eyebrow">下一场考试</view>
+    <view class="exam-name">{{nextExam.name}}</view>
+    <view class="exam-meta">
+      {{nextExam.dateLabel}} · {{nextExam.timeLabel}} · {{nextExam.location || '考场待定'}}
+    </view>
+    <view class="exam-days">{{nextExam.daysLabel}}</view>
+  </view>
+
   <view class="section-title">今日课程</view>
 
   <view wx:if="{{isEmpty}}" class="empty-card">

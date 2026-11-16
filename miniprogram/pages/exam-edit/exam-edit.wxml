@@ -1,0 +1,110 @@
+<view class="page edit-page">
+  <view wx:if="{{sourceLabel}}" class="source-hint">{{sourceLabel}}</view>
+
+  <view class="form-card">
+    <view class="form-row">
+      <text class="form-label">考试科目</text>
+      <input
+        class="form-input"
+        value="{{name}}"
+        data-field="name"
+        placeholder="例如：高等数学"
+        placeholder-class="placeholder"
+        maxlength="40"
+        bindinput="onInput"
+      />
+    </view>
+    <view class="form-row">
+      <text class="form-label">考试名称</text>
+      <input
+        class="form-input"
+        value="{{title}}"
+        data-field="title"
+        placeholder="选填，例如：期末（分散）"
+        placeholder-class="placeholder"
+        maxlength="40"
+        bindinput="onInput"
+      />
+    </view>
+  </view>
+
+  <view class="form-card">
+    <picker mode="date" value="{{date}}" bindchange="onDateChange">
+      <view class="form-row">
+        <text class="form-label">考试日期</text>
+        <text class="form-value">{{date || '请选择'}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+
+    <picker mode="time" value="{{startTime || '09:00'}}" bindchange="onStartTimeChange">
+      <view class="form-row">
+        <text class="form-label">开始时间</text>
+        <text class="form-value">{{startTime || '请选择'}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+
+    <picker mode="time" value="{{endTime || '11:00'}}" bindchange="onEndTimeChange">
+      <view class="form-row">
+        <text class="form-label">结束时间</text>
+        <text class="form-value">{{endTime || '请选择'}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="form-card">
+    <view class="form-row">
+      <text class="form-label">考场</text>
+      <input
+        class="form-input"
+        value="{{location}}"
+        data-field="location"
+        placeholder="例如：E03-A102"
+        placeholder-class="placeholder"
+        maxlength="40"
+        bindinput="onInput"
+      />
+    </view>
+    <view class="form-row">
+      <text class="form-label">校区</text>
+      <input
+        class="form-input"
+        value="{{campus}}"
+        data-field="campus"
+        placeholder="选填，例如：北校区"
+        placeholder-class="placeholder"
+        maxlength="30"
+        bindinput="onInput"
+      />
+    </view>
+    <view class="form-row">
+      <text class="form-label">考核方式</text>
+      <input
+        class="form-input"
+        value="{{mode}}"
+        data-field="mode"
+        placeholder="选填，例如：考试 / 考查"
+        placeholder-class="placeholder"
+        maxlength="20"
+        bindinput="onInput"
+      />
+    </view>
+    <view class="form-row">
+      <text class="form-label">备注</text>
+      <input
+        class="form-input"
+        value="{{remark}}"
+        data-field="remark"
+        placeholder="选填，例如：可带计算器"
+        placeholder-class="placeholder"
+        maxlength="60"
+        bindinput="onInput"
+      />
+    </view>
+  </view>
+
+  <view class="primary-btn save-btn" bindtap="onSave">保存</view>
+  <view wx:if="{{isEdit}}" class="delete-btn" bindtap="onDelete">删除这场考试</view>
+</view>

@@ -65,6 +65,21 @@
   margin-left: 8rpx;
 }
 
+.exam-btn {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: var(--soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text);
+}
+
 .notice-btn {
   position: relative;
   width: 64rpx;

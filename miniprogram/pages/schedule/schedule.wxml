@@ -5,6 +5,7 @@
       <text class="caret">▾</text>
     </view>
     <view class="top-actions">
+      <view class="exam-btn" bindtap="onExamTap">考</view>
       <view class="notice-btn {{noticeUnread ? 'unread' : ''}}" bindtap="onNoticeTap">
         <image class="notice-icon" src="/assets/notice.png" mode="aspectFit"></image>
         <view wx:if="{{noticeUnread}}" class="notice-dot"></view>

@@ -175,3 +175,35 @@
   background: #f1f1ec;
   color: #9a9a94;
 }
+
+.exam-card {
+  margin-top: 18rpx;
+  padding: 24rpx 28rpx;
+  background: var(--card);
+  border-radius: 22rpx;
+  border-left: 8rpx solid #e0a33a;
+}
+
+.exam-eyebrow {
+  font-size: 20rpx;
+  color: #9a6b12;
+}
+
+.exam-name {
+  margin-top: 6rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.exam-meta {
+  margin-top: 8rpx;
+  font-size: 23rpx;
+  color: var(--muted);
+}
+
+.exam-days {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #9a6b12;
+  font-weight: 600;
+}

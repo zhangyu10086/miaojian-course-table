@@ -8,6 +8,8 @@
     "pages/sync/sync",
     "pages/school-picker/school-picker",
     "pages/settings/settings",
+    "pages/exams/exams",
+    "pages/exam-edit/exam-edit",
     "pages/privacy/privacy",
     "pages/admin/admin",
     "pages/school-admin/school-admin",
