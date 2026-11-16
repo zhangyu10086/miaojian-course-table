@@ -95,16 +95,21 @@ course-table/
 │  │  ├─ sync/                  # 教务导入
 │  │  ├─ school-picker/         # 学校搜索与选择
 │  │  ├─ settings/              # 学期与节次设置
+│  │  ├─ exams/                 # 考试安排
+│  │  ├─ exam-edit/             # 添加 / 编辑考试
 │  │  ├─ privacy/               # 隐私说明与开源声明（长按进入管理员页）
 │  │  ├─ admin/                 # 管理员入口：公告管理 / 学校管理
 │  │  ├─ school-admin/          # 管理员新增/编辑/删除学校
 │  │  ├─ notice-admin/          # 管理员发布 / 管理公告
 │  │  ├─ notice-edit/           # 编辑公告
 │  │  └─ notice-detail/         # 公告详情
+│  ├─ styles/
+│  │  └─ form.wxss              # 表单通用样式
 │  └─ utils/
 │     ├─ store.js               # 本地存储
 │     ├─ date.js                # 周次/日期计算
 │     ├─ parser.js              # 正方 kbList 解析
+│     ├─ exams.js               # 考试存储、解析与排序
 │     ├─ layout.js              # 课程块冲突布局
 │     ├─ schools.js             # 内置学校索引与搜索
 │     ├─ school-access.js       # 学校是否开放自动导入
@@ -113,7 +118,7 @@ course-table/
 │     ├─ rsa.js                 # 手机端 RSA 加密
 │     └─ cloud.js               # 云函数调用
 ├─ cloudfunctions/
-│  ├─ syncSchedule/             # 正方登录 + 课表抓取
+│  ├─ syncSchedule/             # 正方登录 + 课表 / 考试抓取
 │  ├─ listSchools/              # 读取学校注册表
 │  ├─ manageSchool/             # 管理员新增 / 编辑 / 删除学校
 │  ├─ listNotices/              # 读取公告
@@ -251,6 +256,10 @@ node scripts/build-school-aliases.js 某某大学
    - `xqm`：`3` 第一学期 / `12` 第二学期 / `16` 短学期
    - `kzlx=ck`、`xsdm=`
 6. 从返回 JSON 的 `kbList` 中取 `kcmc/xm/cdmc/xqj/jcs/zcd`。
+7. `POST {base}/kwgl/kscx_cxXsksxxIndex.html?doType=query&gnmkdm=N358105`：拉考试安排，参数同上。
+   只保留 `kcmc/ksmc/kssj/cdmc/cdxqmc/khfs/xf/jsxx`，学号、姓名等个人信息不返回给客户端。
+
+另外支持 `{ action: 'exams' }`：只登录并返回考试，不返回课表，供考试页单独刷新使用。
 
 > 为什么不能由手机自己取公钥：正方公钥按会话生成，每次请求都会轮换，私钥只存在于学校当前的 `JSESSIONID` 里。手机另开会话取到的公钥，云函数登录时用不上。实测示例学校就是这样。
 
@@ -292,6 +301,8 @@ npm test
 - `kbList` 归一化：合并重复课程、拆分不连续节次、过滤超范围周次。
 - 周次计算：学期前、学期中、学期后、周日作为每周起始日。
 - 冲突布局：无冲突、两课冲突、三课冲突、非当前周过滤。
+- 考试：时间串解析、字段映射、同步替换与手动保留、未考/已考拆分、剩余天数。
+- 公告缓存：单条读取、内容比对、删除后移出缓存。
 
 ## 合规与风险
 
